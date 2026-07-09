@@ -1,0 +1,14 @@
+[
+  {
+    "direcao": "recebido",
+    "numero": "551999999999",
+    "mensagem": "/status",
+    "data": "2026-07-08T21:27:24.300498"
+  },
+  {
+    "direcao": "envio",
+    "numero": "551999999999",
+    "mensagem": "🟢 BUENOSERV — Status\n🤖 Agentes: 81\n📜 Scripts: ['auto_followup.py', 'chain_agents.py', 'enviar_email.py', 'gen_api.py', 'gen_autopilot.py', 'gen_backup.py', 'gen_biblioteca_projetos.py', 'gen_blog.py', 'gen_bom.py', 'gen_bot_telegram.py', 'gen_budget.py', 'gen_calc_impostos.py', 'gen_ci_pipeline.py', 'gen_click_sign.py', 'gen_conciliacao.py', 'gen_contrato.py', 'gen_crm.py', 'gen_diario_obra.py', 'gen_docx.py', 'gen_dre.py', 'gen_drip_campaign.py', 'gen_dwg.py', 'gen_eap.py', 'gen_email_templates.py', 'gen_fluxo_caixa.py', 'gen_google_meu_negocio.py', 'gen_healer.py', 'gen_healthcheck.py', 'gen_holerite.py', 'gen_logging.py', 'gen_market_intel.py', 'gen_nfe.py', 'gen_orcado_realizado.py', 'gen_pdf.py', 'gen_portfolio.py', 'gen_pptx.py', 'gen_proposta.py', 'gen_proposta_online.py', 'gen_report_pdf.py', 'gen_rfp_scraper.py', 'gen_simulador_cronograma.py', 'gen_site_deploy.sh', 'gen_timesheet.py', 'gen_treinamento.py', 'gen_xlsx.py', 'init_projeto.sh', 'register_agent.py', 'serve_dashboard.py', 'vigia_check.py']\n🏗️ Projetos: 2\n📊 Pipeline: ativo\n✅ Sistema operacional",
+    "data": "2026-07-08T21:27:24.303264"
+  }
+]

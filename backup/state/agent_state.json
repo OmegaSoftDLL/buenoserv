@@ -1,0 +1,477 @@
+{
+  "agent_count": 81,
+  "last_update": "2026-07-08",
+  "projects": [
+    {
+      "id": "P-001",
+      "nome": "Projeto XPTO",
+      "cliente": "Cliente ABC",
+      "escopo": "Rede MPLS-TP",
+      "status": "Ativo",
+      "data_inicio": "2026-07-08T19:11:41.742399",
+      "fases": {
+        "test": {
+          "status": "ok",
+          "data": "2026-07-08"
+        },
+        "levantamento": {
+          "status": "concluido",
+          "data": "2026-07-08T19:12:33.340456"
+        },
+        "engenharia": {
+          "status": "concluido",
+          "data": "2026-07-08T19:12:33.570813"
+        },
+        "instalacao": {
+          "status": "concluido",
+          "data": "2026-07-08T19:12:33.785276"
+        }
+      }
+    },
+    {
+      "id": "P-002",
+      "nome": "E4 ENERGIA - Padronizacao SE 145kV",
+      "cliente": "E4 ENERGIA",
+      "escopo": "Consultoria tecnica Fase 2 - padronizacao de subestacoes de distribuicao ate 145kV (telecomunicacoes)",
+      "status": "Ativo",
+      "data_inicio": "2026-07-08T19:20:00.671149",
+      "fases": {
+        "proposta": {
+          "status": "concluido",
+          "data": "2026-07-08T19:20:01.301923"
+        }
+      }
+    }
+  ],
+  "tasks": {
+    "Projeto XPTO": [
+      {
+        "agente": "proposta",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:11:41.953985",
+        "observacao": "Proposta aprovada"
+      },
+      {
+        "agente": "vigia",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:11:56.462674",
+        "observacao": "Tudo certo"
+      },
+      {
+        "agente": "vigia",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:12:33.987638",
+        "observacao": "OK"
+      }
+    ],
+    "E4 ENERGIA - Padronizacao SE 145kV": [
+      {
+        "agente": "proposta",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:20:00.881230",
+        "observacao": "Proposta BSE-01-R0 enviada em 07/07/2026 - R8.240/mes - R98.880/ano"
+      },
+      {
+        "agente": "comercial",
+        "status": "em_andamento",
+        "timestamp": "2026-07-08T19:20:01.091205",
+        "observacao": "Pipeline: proposta enviada - aguardando retorno"
+      },
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:33:41.135120",
+        "observacao": "Follow-up enviado para giovanna.ramalho@e4.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Iosi Energia": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:40:39.784075",
+        "observacao": "E-mail enviado para comercial@iosienergia.com.br em 08/07/2026 - aguardando retorno"
+      }
+    ],
+    "Prospeccao Sistem Engenharia": [
+      {
+        "agente": "comercial",
+        "status": "em_andamento",
+        "timestamp": "2026-07-08T19:40:40.009269",
+        "observacao": "LinkedIn - buscar contato para envio"
+      },
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:41:54.680621",
+        "observacao": "E-mail enviado para comercial@sistem.eng.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Omexom": [
+      {
+        "agente": "comercial",
+        "status": "em_andamento",
+        "timestamp": "2026-07-08T19:40:40.206710",
+        "observacao": "LinkedIn - buscar contato para envio"
+      },
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:41:54.935495",
+        "observacao": "E-mail enviado para contato@omexom.com em 08/07/2026"
+      }
+    ],
+    "Prospeccao Cymi Construcoes": [
+      {
+        "agente": "comercial",
+        "status": "em_andamento",
+        "timestamp": "2026-07-08T19:40:40.402684",
+        "observacao": "LinkedIn - buscar contato para envio"
+      },
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T21:04:09.584205",
+        "observacao": "E-mail enviado para cymi@cymiconstrucoes.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Engie Brasil": [
+      {
+        "agente": "comercial",
+        "status": "em_andamento",
+        "timestamp": "2026-07-08T19:40:40.638922",
+        "observacao": "LinkedIn - buscar contato para envio"
+      },
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T21:04:09.816865",
+        "observacao": "E-mail enviado para comercial@engie.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Omexom Brasil": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:41:54.935495",
+        "observacao": "E-mail enviado para contato@omexom.com em 08/07/2026"
+      }
+    ],
+    "Prospeccao Brasil Real Energia": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T19:41:55.197458",
+        "observacao": "E-mail enviado para contato@construtorabrasilreal.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao MPE Engenharia": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:02:00",
+        "observacao": "E-mail enviado para mpe@mpeengenharia.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Engesist": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:02:10",
+        "observacao": "E-mail enviado para engesist@engesist.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Montelbras": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:02:20",
+        "observacao": "E-mail enviado para comercial@montelbras.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Engie Brasil marketing": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:03:00",
+        "observacao": "E-mail enviado para marketing.solucoes@engie.com em 08/07/2026"
+      }
+    ],
+    "Prospeccao Aplica Engenharia": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:03:10",
+        "observacao": "E-mail enviado para contato@aplicaengenharia.com.br em 08/07/2026"
+      }
+    ],
+    "Prospeccao Proteon Engenharia": [
+      {
+        "agente": "comercial",
+        "status": "concluido",
+        "timestamp": "2026-07-08T20:03:20",
+        "observacao": "E-mail enviado para contato@proteonengenharia.com.br em 08/07/2026"
+      }
+    ]
+  },
+  "memory": {
+    "completed_projects": [
+      {
+        "nome": "E4 ENERGIA - Proposta BSE-01-R0",
+        "cliente": "E4 ENERGIA",
+        "tipo": "proposta_enviada",
+        "valor": 698880,
+        "data": "2026-07-07"
+      }
+    ],
+    "common_issues": [],
+    "lessons_learned": [
+      {
+        "projeto": "E4 ENERGIA - Padronizacao SE 145kV",
+        "licao": "Proposta BSE-01-R0: consultoria telecom 145kV, R$58k/mes, 12 meses, Simples Nacional, IPCA reajuste, 160h/mes, remoto+viagens",
+        "data": "2026-07-08T19:20:36.905010",
+        "tipo": "proposta_real"
+      }
+    ]
+  },
+  "schedule": {
+    "daily": [],
+    "weekly": [],
+    "monthly": []
+  },
+  "buenoserv_real": {
+    "nome": "BUENOSERV SERVICOS DE ENGENHARIA LTDA",
+    "cnpj": "60.490.193/0001-38",
+    "endereco": "Rua Giacomo Fior, nº 427 – Leme - SP",
+    "diretor": "Ricardo Bueno",
+    "regime": "Simples Nacional (LC 123/2006)",
+    "banco": "BTG (208) | Ag: 0050 | CC: 2321479-4",
+    "pix": "60.490.193/0001-38 (CNPJ)",
+    "ultima_atualizacao": "2026-07-08"
+  },
+  "dre": {
+    "ano": 2026,
+    "meses": {
+      "7": {
+        "ano": 2026,
+        "receita_bruta": 8500.0,
+        "deducoes": 0,
+        "receita_liquida": 8500.0,
+        "custos_servicos": 3000.0,
+        "lucro_bruto": 5500.0,
+        "despesas_administrativas": 1500.0,
+        "despesas_comerciais": 500.0,
+        "despesas_tributarias": 382.5,
+        "lucro_operacional": 3117.5,
+        "resultado_financeiro": 0.0,
+        "lucro_liquido": 3117.5
+      }
+    },
+    "acumulado": {
+      "receita_bruta": 0,
+      "deducoes": 0,
+      "receita_liquida": 0,
+      "custos_servicos": 0,
+      "lucro_bruto": 0,
+      "despesas_administrativas": 0,
+      "despesas_comerciais": 0,
+      "despesas_tributarias": 0,
+      "lucro_operacional": 0,
+      "resultado_financeiro": 0,
+      "lucro_liquido": 0
+    }
+  },
+  "evolucao_progresso": {
+    "ultima_atualizacao": "2026-07-08T21:08:32.361494",
+    "total_frentes": 40,
+    "concluidas": [
+      "A1-21 agentes",
+      "A2-duplicados",
+      "A3-cross-workflows",
+      "A4-treinamento",
+      "B1-dashboard",
+      "B2-telegram",
+      "B3-followup",
+      "B4-drip",
+      "B5-backup",
+      "B6-nfe",
+      "B7-holerite",
+      "B8-contrato",
+      "C1-followup",
+      "C2-templates",
+      "C3-relatorio",
+      "D2-dominio",
+      "D3-blog",
+      "D5-google",
+      "E1-leilao",
+      "E2-rfp",
+      "E3-crm",
+      "E4-proposta-online",
+      "E5-click-sign",
+      "F1-dre",
+      "F2-fluxo",
+      "F3-conciliacao",
+      "F4-impostos",
+      "F5-orcado-real",
+      "G1-eap",
+      "G2-timesheet",
+      "G3-diario",
+      "H1-dwg",
+      "H2-bom",
+      "H3-budget",
+      "H4-monte-carlo",
+      "H5-biblioteca",
+      "S1-healthcheck",
+      "S2-autopilot",
+      "S3-logging",
+      "S4-dashboard-preditivo",
+      "S5-27-agentes-strong-turbinados",
+      "S6-6-agentes-sistema-turbinados"
+    ],
+    "pendentes_acao_usuario": [
+      "D1 - Publicar site",
+      "D4 - LinkedIn Company Page"
+    ],
+    "pendentes_implementacao": [
+      "C2 - Templates adicionais e-mail",
+      "D3 - Blog técnico",
+      "D5 - Google Meu Negócio",
+      "E3 - CRM evoluído",
+      "E4 - Proposta on-line",
+      "E5 - Contrato click-to-sign",
+      "F2 - Fluxo caixa projetado",
+      "F3 - Conciliação bancária",
+      "F4 - Calculadora impostos",
+      "G1 - Template MS Project",
+      "G4 - Registro fotográfico",
+      "G5 - EAP automática",
+      "H4 - Simulador cronograma",
+      "H5 - Biblioteca projetos",
+      "A2 - Unificar duplicados",
+      "A3 - Cross-agent workflows",
+      "A4 - Auto-treinamento"
+    ]
+  },
+  "scripts_disponiveis": [
+    "auto_followup.py",
+    "chain_agents.py",
+    "enviar_email.py",
+    "gen_api.py",
+    "gen_autopilot.py",
+    "gen_backup.py",
+    "gen_biblioteca_projetos.py",
+    "gen_blog.py",
+    "gen_bom.py",
+    "gen_bot_telegram.py",
+    "gen_budget.py",
+    "gen_calc_impostos.py",
+    "gen_ci_pipeline.py",
+    "gen_click_sign.py",
+    "gen_conciliacao.py",
+    "gen_contrato.py",
+    "gen_crm.py",
+    "gen_diario_obra.py",
+    "gen_docx.py",
+    "gen_dre.py",
+    "gen_drip_campaign.py",
+    "gen_dwg.py",
+    "gen_eap.py",
+    "gen_email_templates.py",
+    "gen_fluxo_caixa.py",
+    "gen_google_meu_negocio.py",
+    "gen_healer.py",
+    "gen_healthcheck.py",
+    "gen_holerite.py",
+    "gen_logging.py",
+    "gen_market_intel.py",
+    "gen_nfe.py",
+    "gen_orcado_realizado.py",
+    "gen_pdf.py",
+    "gen_portfolio.py",
+    "gen_pptx.py",
+    "gen_proposta.py",
+    "gen_proposta_online.py",
+    "gen_report_pdf.py",
+    "gen_rfp_scraper.py",
+    "gen_simulador_cronograma.py",
+    "gen_site_deploy.sh",
+    "gen_timesheet.py",
+    "gen_treinamento.py",
+    "gen_xlsx.py",
+    "init_projeto.sh",
+    "register_agent.py",
+    "serve_dashboard.py",
+    "vigia_check.py"
+  ],
+  "treinamento": {
+    "historico": [
+      {
+        "data": "2026-07-08T20:56:30.601018",
+        "temas": [
+          "telecom"
+        ],
+        "acertos": 0,
+        "total": 2,
+        "pct": 0.0
+      }
+    ]
+  },
+  "autopilot": {
+    "historico": [
+      {
+        "timestamp": "2026-07-08T21:08:21.505343",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-08T22:00:02.019797",
+        "acoes": 0
+      }
+    ],
+    "ultima_execucao": "2026-07-08T22:00:02.019797"
+  },
+  "system_log": [
+    {
+      "timestamp": "2026-07-08T21:08:21.950123",
+      "origem": "sistema",
+      "tipo": "inicializacao",
+      "mensagem": "Sistema evolvido com autopilot, healthcheck e logging centralizado",
+      "detalhe": ""
+    }
+  ],
+  "market_intel": {
+    "seen_hashes": [
+      "672c64ab29a6d5aa8217846320809e30b62f9fb7b2598b1c85b503cb43d402a1",
+      "217e8b617ef93a6c59cc85aaf0bddea5280f6107998bce6953a8850161606310",
+      "c24c3bbed8418dcea5fe89381c7d9eb5d078540e22b98f2b813af867f24378ff",
+      "affcaaaa57f48b4278da6a6840b92c1d0c7cb3a5a8764cc1f2e079b82cc6544d",
+      "eaca3a5ec187a430a6ae0354cf68159cee9fdf493f591b9a9320e36e5711adc8",
+      "c96c6d39c73d97363035571ca557e00f2ed38ae217a48d3fabfd8030b01924a6",
+      "eef92917d17de0bece9d9d8ab8a90446a9d3de1cead9194355902d2604ca0606",
+      "6ec74fba768df15fcafebda28b99ddb949cf29915383339f76450e39b6b249c1",
+      "c3f20bae22a97fac7a54c20671677a4de69f85530a0ccecbdd490b74525a3ff0",
+      "c4409f4c9ba97f7ae88bf1ded617ca3b14e7815df56bdf14adec619734ca5662",
+      "142f9ca050e55d77d7fa4608c326314fb0d60274e4163e91317110ee9479fc7a",
+      "d8479af7a92fcd700923ef0b7cae0ff98165faefc1cbb60488c4de02d322cab8"
+    ],
+    "seen_ids": [
+      "f47dc6304daa",
+      "d83a0caa12c6",
+      "f40fd46a2016",
+      "b2dd88a613b3",
+      "9e06a42e53ae",
+      "6ff93f30e6d2",
+      "fcb2fa4f76f8",
+      "6d7d8e3e1212",
+      "7ae559ca4779",
+      "0cc2282fa590",
+      "bfd55af67ee3"
+    ]
+  },
+  "emails_enviados": [
+    {
+      "para": "ricardo.bueno@buenoservengenharia.com",
+      "assunto": "teste:1783556835",
+      "data": "2026-07-08T21:27:15.921481",
+      "status": "ok"
+    }
+  ]
+}

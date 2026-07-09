@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV - Portal do Cliente</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a1628;color:#e8e8e8;min-height:100vh}
+  :root{--navy:#0a1628;--gold:#C9A84C;--gold-dim:#a88a2e;--card:#111d35;--border:#1e2d4d;--text:#c8d0dd;--text-muted:#7a87a0}
+
+  /* === LOGIN === */
+  #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+  .login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem 2.5rem;width:100%;max-width:420px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .login-box .logo{font-size:2rem;font-weight:700;letter-spacing:-.5px;color:#fff;margin-bottom:.25rem}
+  .login-box .logo span{color:var(--gold)}
+  .login-box .sub{color:var(--text-muted);font-size:.9rem;margin-bottom:2rem}
+  .login-box label{display:block;text-align:left;color:var(--text);font-size:.85rem;margin-bottom:.4rem}
+  .login-box input[type=text]{width:100%;padding:.85rem 1rem;background:#0d1a30;border:1px solid var(--border);border-radius:10px;color:#fff;font-size:1rem;outline:none;transition:border-color .2s}
+  .login-box input[type=text]:focus{border-color:var(--gold)}
+  .login-box button{width:100%;padding:.85rem;background:var(--gold);border:none;border-radius:10px;color:#0a1628;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1.2rem;transition:background .2s}
+  .login-box button:hover{background:var(--gold-dim)}
+  .login-error{color:#f87171;font-size:.85rem;margin-top:.6rem;display:none}
+
+  /* === DASHBOARD === */
+  #dashboard{display:none}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+  .topbar .brand{font-size:1.2rem;font-weight:700;color:#fff}
+  .topbar .brand span{color:var(--gold)}
+  .topbar .user-info{display:flex;align-items:center;gap:.8rem}
+  .topbar .user-info .avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);color:#0a1628;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+  .topbar .user-info .name{font-size:.9rem}
+  .topbar .logout-btn{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-size:.8rem;transition:all .2s}
+  .topbar .logout-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+  .container{max-width:1280px;margin:0 auto;padding:2rem}
+
+  /* Welcome */
+  .welcome-card{background:linear-gradient(135deg,#111d35 0%,#0d1a30 100%);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+  .welcome-card::after{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%)}
+  .welcome-card h1{font-size:1.6rem;margin-bottom:.3rem}
+  .welcome-card h1 span{color:var(--gold)}
+  .welcome-card p{color:var(--text-muted);font-size:.95rem}
+
+  /* Indicators */
+  .indicators{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+  .ind-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem}
+  .ind-card .label{color:var(--text-muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+  .ind-card .value{font-size:1.8rem;font-weight:700;margin-top:.3rem;color:#fff}
+  .ind-card .value.gold{color:var(--gold)}
+
+  /* Section header */
+  .section-title{font-size:1.1rem;font-weight:600;margin-bottom:1rem;color:#fff;display:flex;align-items:center;gap:.5rem}
+  .section-title .badge{background:var(--gold);color:#0a1628;font-size:.7rem;padding:.15rem .55rem;border-radius:20px;font-weight:700}
+
+  /* Projects */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:2.5rem}
+  .project-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;transition:border-color .2s}
+  .project-card:hover{border-color:var(--gold)}
+  .project-card .proj-name{font-weight:600;color:#fff;margin-bottom:.6rem}
+  .project-card .status{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;padding:.25rem .7rem;border-radius:20px;font-weight:600}
+  .status.online{background:rgba(52,211,153,.15);color:#34d399}
+  .status.offline{background:rgba(248,113,113,.15);color:#f87171}
+  .status.paused{background:rgba(251,191,36,.15);color:#fbbf24}
+  .project-card .meta{color:var(--text-muted);font-size:.82rem;margin-top:.6rem}
+
+  /* Documents table */
+  .doc-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:2.5rem}
+  .doc-table{width:100%;border-collapse:collapse}
+  .doc-table th{text-align:left;padding:.9rem 1.2rem;font-size:.8rem;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);background:rgba(10,22,40,.4)}
+  .doc-table td{padding:.85rem 1.2rem;font-size:.9rem;border-bottom:1px solid rgba(30,45,77,.5)}
+  .doc-table tr:last-child td{border-bottom:none}
+  .doc-table td:last-child{text-align:right}
+  .doc-table .doc-icon{color:var(--gold);margin-right:.6rem}
+  .btn-download{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:.3rem .8rem;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s;font-weight:600}
+  .btn-download:hover{background:var(--gold);color:#0a1628}
+
+  /* Timeline */
+  .timeline{position:relative;padding-left:1.5rem;margin-bottom:2.5rem}
+  .timeline::before{content:'';position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--border)}
+  .tl-item{position:relative;margin-bottom:1.4rem;padding:.6rem 0 .6rem 1rem}
+  .tl-item::before{content:'';position:absolute;left:-1.5rem;top:1rem;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--card)}
+  .tl-item .tl-date{color:var(--text-muted);font-size:.78rem}
+  .tl-item .tl-text{color:#d0d7e6;font-size:.9rem;margin-top:.15rem}
+  .tl-item .tl-tag{display:inline-block;font-size:.7rem;background:rgba(201,168,76,.12);color:var(--gold);padding:.1rem .5rem;border-radius:4px;margin-left:.5rem}
+
+  /* Support */
+  .support-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:2rem}
+  .support-box h3{color:#fff;margin-bottom:.3rem}
+  .support-box .sub{color:var(--text-muted);font-size:.85rem;margin-bottom:1.2rem}
+  .support-box textarea{width:100%;padding:.85rem 1rem;background:#0d1a30;border:1px solid var(--border);border-radius:10px;color:#fff;font-size:.9rem;resize:vertical;min-height:100px;outline:none;transition:border-color .2s}
+  .support-box textarea:focus{border-color:var(--gold)}
+  .support-box .row{display:flex;gap:1rem;margin-top:.8rem;flex-wrap:wrap}
+  .support-box .row select{flex:1;min-width:180px;padding:.7rem 1rem;background:#0d1a30;border:1px solid var(--border);border-radius:10px;color:#fff;font-size:.9rem;outline:none}
+  .support-box .row select:focus{border-color:var(--gold)}
+  .support-box button{background:var(--gold);border:none;border-radius:10px;color:#0a1628;font-weight:700;padding:.7rem 1.8rem;cursor:pointer;transition:background .2s;font-size:.9rem}
+  .support-box button:hover{background:var(--gold-dim)}
+  .support-feedback{color:#34d399;font-size:.85rem;margin-top:.6rem;display:none}
+
+  /* Responsive */
+  @media(max-width:768px){
+    .container{padding:1rem}
+    .topbar{padding:.8rem 1rem}
+    .welcome-card h1{font-size:1.3rem}
+    .indicators{grid-template-columns:repeat(2,1fr)}
+    .projects-grid{grid-template-columns:1fr}
+    .doc-table th,.doc-table td{padding:.6rem .8rem;font-size:.8rem}
+    .support-box .row{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+<!-- ====== LOGIN ====== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="logo">BUENO<span>SERV</span></div>
+    <div class="sub">Portal do Cliente</div>
+    <label for="loginName">Seu nome</label>
+    <input type="text" id="loginName" placeholder="Ex: João Silva" autocomplete="off">
+    <button id="btnLogin">Entrar</button>
+    <div class="login-error" id="loginError">Digite seu nome para acessar</div>
+  </div>
+</div>
+
+<!-- ====== DASHBOARD ====== -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="brand">BUENO<span>SERV</span> <span style="font-weight:400;font-size:.9rem;color:var(--text-muted)">Portal</span></div>
+    <div class="user-info">
+      <div class="avatar" id="avatarText">JS</div>
+      <span class="name" id="topbarName">João Silva</span>
+      <button class="logout-btn" id="btnLogout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container" id="appRoot"></div>
+</div>
+
+<script>
+// ===================================================================
+//  MOCK DATA  —  substitua as funções abaixo por chamadas de API real
+// ===================================================================
+const MockDB = {
+  // Clientes simulados -> projetos associados
+  clientes: {
+    "joao silva": { nome: "João Silva", empresa: "Silva Engenharia Ltda." },
+    "maria oliveira": { nome: "Maria Oliveira", empresa: "Oliveira Telecom S.A." },
+    "carlos mendes": { nome: "Carlos Mendes", empresa: "Mendes Energia" },
+    "ana costa": { nome: "Ana Costa", empresa: "Costa Infra Ltda." },
+  },
+
+  // Projetos por cliente
+  projetos(cliente) {
+    const base = [
+      { id:1, nome:"Comissionamento SE 138kV", status:"online", progresso:"78%", entrega:"Out/2026", contratado:"R$ 1.420.000" },
+      { id:2, nome:"Anel DWDM",               status:"online", progresso:"45%", entrega:"Dez/2026", contratado:"R$ 890.000" },
+      { id:3, nome:"Consultoria Proteção",     status:"paused", progresso:"92%", entrega:"Ago/2026", contratado:"R$ 540.000" },
+      { id:4, nome:"Modernização Subestação",  status:"online", progresso:"30%", entrega:"Mar/2027", contratado:"R$ 2.100.000" },
+    ];
+    if (cliente === "Costa Infra Ltda." || cliente === "Ana Costa") {
+      return base.filter(p => p.id !== 2);
+    }
+    return base;
+  },
+
+  // Indicadores dinâmicos por cliente
+ indicadores(cliente) {
+    const base = { totalContratado: "R$ 4.950.000", horasAlocadas: "2.340h", entregasConcluidas: 12 };
+    if (cliente === "Costa Infra Ltda." || cliente === "Ana Costa") {
+      return { ...base, totalContratado: "R$ 3.060.000", horasAlocadas: "1.120h", entregasConcluidas: 5 };
+    }
+    return base;
+  },
+
+  // Documentos (compartilhado)
+  documentos: [
+    { nome:"Contrato de Prestação de Serviços", tipo:"PDF", arquivo:"contrato_se138kv.pdf" },
+    { nome:"DRE - Demonstrativo de Resultados", tipo:"XLSX", arquivo:"dre_2025.xlsx" },
+    { nome:"Relatório Semanal - CM-042",        tipo:"PDF", arquivo:"relatorio_semanal_042.pdf" },
+    { nome:"Proposta Comercial - Anel DWDM",    tipo:"PDF", arquivo:"proposta_anel_dwdm.pdf" },
+  ],
+
+  // Timeline (compartilhado)
+  timeline: [
+    { data:"02/07/2026", texto:"Relatório semanal CM-042 enviado", tag:"Documento" },
+    { data:"28/06/2026", texto:"Reunião de alinhamento SE 138kV", tag:"Reunião" },
+    { data:"20/06/2026", texto:"Entrega parcial do projeto Anel DWDM", tag:"Entrega" },
+    { data:"15/06/2026", texto:"Aprovação do escopo de Consultoria Proteção", tag:"Aprovação" },
+    { data:"10/06/2026", texto:"Visita técnica à subestação", tag:"Campo" },
+    { data:"05/06/2026", texto:"Contrato assinado - Modernização Subestação", tag:"Contrato" },
+  ],
+};
+
+// ===================================
+//  Helpers
+// ===================================
+function clienteKey(name) {
+  return Object.keys(MockDB.clientes).find(k => k === name.trim().toLowerCase()) || null;
+}
+
+function getCliente(name) {
+  const key = clienteKey(name);
+  return key ? MockDB.clientes[key] : null;
+}
+
+function getProjetos(cliente) {
+  return MockDB.projetos(cliente.nome) || MockDB.projetos(cliente.empresa);
+}
+
+// =========================================================
+//  Render Dashboard
+// =========================================================
+function renderDashboard(cliente) {
+  const root = document.getElementById("appRoot");
+  const projetos = getProjetos(cliente);
+  const ind = MockDB.indicadores(cliente.nome) || MockDB.indicadores(cliente.empresa);
+
+  // initials
+  const iniciais = cliente.nome.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
+  document.getElementById("avatarText").textContent = iniciais;
+  document.getElementById("topbarName").textContent = cliente.nome;
+
+  // --- Projects ---
+  const projCards = projetos.map(p => {
+    const statusMap = { online: "Em andamento", paused: "Pausado", offline: "Parado" };
+    return `<div class="project-card">
+      <div class="proj-name">${p.nome}</div>
+      <span class="status ${p.status}">● ${statusMap[p.status] || p.status}</span>
+      <div class="meta">Progresso: ${p.progresso} · Previsão: ${p.entrega}</div>
+      <div class="meta">Contratado: ${p.contratado}</div>
+    </div>`;
+  }).join("");
+
+  // --- Docs ---
+  const docRows = MockDB.documentos.map(d => `
+    <tr>
+      <td><span class="doc-icon">▸</span>${d.nome}</td>
+      <td>${d.tipo}</td>
+      <td><button class="btn-download" onclick="downloadDoc('${d.arquivo}')">Download</button></td>
+    </tr>
+  `).join("");
+
+  // --- Timeline ---
+  const tlItems = MockDB.timeline.map(t => `
+    <div class="tl-item">
+      <div class="tl-date">${t.data}</div>
+      <div class="tl-text">${t.texto} <span class="tl-tag">${t.tag}</span></div>
+    </div>
+  `).join("");
+
+  root.innerHTML = `
+    <!-- Welcome -->
+    <div class="welcome-card">
+      <h1>Bem-vindo, <span>${cliente.nome}</span></h1>
+      <p>${cliente.empresa} — Acompanhe seus projetos, documentos e atividades em tempo real.</p>
+    </div>
+
+    <!-- Indicators -->
+    <div class="indicators">
+      <div class="ind-card"><div class="label">Total Contratado</div><div class="value gold">${ind.totalContratado}</div></div>
+      <div class="ind-card"><div class="label">Horas Alocadas</div><div class="value">${ind.horasAlocadas}</div></div>
+      <div class="ind-card"><div class="label">Entregas Concluídas</div><div class="value">${ind.entregasConcluidas}</div></div>
+      <div class="ind-card"><div class="label">Projetos Ativos</div><div class="value">${projetos.length}</div></div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section-title">Projetos Ativos <span class="badge">${projetos.length}</span></div>
+    <div class="projects-grid">${projCards}</div>
+
+    <!-- Documents -->
+    <div class="section-title">Documentos</div>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead><tr><th>Nome</th><th>Tipo</th><th></th></tr></thead>
+        <tbody>${docRows}</tbody>
+      </table>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-title">Atividades Recentes</div>
+    <div class="timeline">${tlItems}</div>
+
+    <!-- Support -->
+    <div class="section-title">Suporte Técnico</div>
+    <div class="support-box">
+      <h3>Solicitar Suporte</h3>
+      <div class="sub">Descreva o problema ou solicitação. Nossa equipe responde em até 2h úteis.</div>
+      <textarea id="supportMsg" placeholder="Ex: Preciso de acesso ao relatório de potência do projeto SE 138kV..."></textarea>
+      <div class="row">
+        <select id="supportType">
+          <option value="tecnico">Suporte Técnico</option>
+          <option value="documentos">Documentos</option>
+          <option value="comercial">Comercial</option>
+          <option value="outro">Outro</option>
+        </select>
+        <button id="btnSupport">Enviar</button>
+      </div>
+      <div class="support-feedback" id="supportFeedback">Solicitação enviada com sucesso!</div>
+    </div>
+  `;
+
+  // Attach support handler
+  document.getElementById("btnSupport").addEventListener("click", () => {
+    const msg = document.getElementById("supportMsg").value.trim();
+    const tipo = document.getElementById("supportType").value;
+    if (!msg) return;
+    console.log("[SUPORTE]", { cliente: cliente.nome, tipo, mensagem: msg });
+    const fb = document.getElementById("supportFeedback");
+    fb.style.display = "block";
+    document.getElementById("supportMsg").value = "";
+    setTimeout(() => fb.style.display = "none", 4000);
+  });
+}
+
+// =========================================================
+//  Auth
+// =========================================================
+function doLogin() {
+  const input = document.getElementById("loginName");
+  const name = input.value.trim();
+  const err = document.getElementById("loginError");
+
+  if (!name) {
+    err.style.display = "block";
+    return;
+  }
+
+  const cliente = getCliente(name);
+  if (!cliente) {
+    // fallback: cria cliente genérico
+    const fake = { nome: name, empresa: `${name} Consultoria Ltda.` };
+    MockDB.clientes[name.toLowerCase()] = fake;
+    startSession(fake);
+    return;
+  }
+  startSession(cliente);
+}
+
+function startSession(cliente) {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  renderDashboard(cliente);
+}
+
+function doLogout() {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  document.getElementById("loginName").value = "";
+  document.getElementById("loginError").style.display = "none";
+}
+
+// download mock
+function downloadDoc(file) {
+  // Simula download — substitua por URL real
+  const notice = document.createElement("div");
+  notice.style.cssText = "position:fixed;bottom:2rem;right:2rem;background:#111d35;border:1px solid var(--gold);color:var(--gold);padding:.8rem 1.5rem;border-radius:10px;font-size:.9rem;z-index:100;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:fadeIn .3s";
+  notice.textContent = `📄 Download iniciado: ${file}`;
+  document.body.appendChild(notice);
+  setTimeout(() => notice.remove(), 3000);
+}
+
+// keydown
+document.getElementById("loginName").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
+document.getElementById("btnLogin").addEventListener("click", doLogin);
+document.getElementById("btnLogout").addEventListener("click", doLogout);
+
+// animation
+const style = document.createElement("style");
+style.textContent = `@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}} .project-card,.ind-card,.doc-table-wrap,.support-box,.timeline,.welcome-card{animation:fadeIn .4s ease-out}`;
+document.head.appendChild(style);
+</script>
+  <script src="chat-widget.js"></script>
+</body>
+</html>

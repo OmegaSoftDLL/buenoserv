@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Kanban — BUENOSERV</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a1628;--card:#111d35;--card-hover:#162240;--text:#e0e6f0;--text-muted:#6e7f96;--border:#1e3250;--prospeccao:#42A5F5;--proposta:#C9A84C;--fechado:#4CAF50;--radius:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.header h1{font-size:1.6rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.header h1 span{color:var(--text-muted);font-weight:400;font-size:0.9rem}
+.btn{background:var(--accent,#1976D2);border:none;color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:0.9rem;font-weight:600;transition:.2s}
+.btn:hover{filter:brightness(1.15)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-sm{padding:6px 14px;font-size:0.8rem}
+.btn-primary{background:#1976D2}
+.btn-success{background:var(--fechado)}
+.btn-warning{background:var(--proposta)}
+.btn-danger{background:#e53935}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.column{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);min-height:300px;transition:.3s}
+.column.drag-over{border-color:var(--text-muted);box-shadow:0 0 0 2px rgba(255,255,255,.1)}
+.col-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.col-header h2{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.col-header .badge{background:var(--border);border-radius:20px;padding:2px 10px;font-size:0.75rem;color:var(--text-muted)}
+.col-header .total{font-size:0.8rem;color:var(--text-muted)}
+.col-body{display:flex;flex-direction:column;gap:12px;min-height:200px}
+.card{background:var(--card-hover);border-left:4px solid var(--border);border-radius:8px;padding:14px;cursor:grab;transition:.25s;position:relative}
+.card:active{cursor:grabbing}
+.card.dragging{opacity:.4;transform:scale(.97)}
+.card[data-status="prospeccao"]{border-left-color:var(--prospeccao)}
+.card[data-status="proposta"]{border-left-color:var(--proposta)}
+.card[data-status="fechado"]{border-left-color:var(--fechado)}
+.card h3{font-size:0.95rem;font-weight:600;margin-bottom:4px}
+.card .client{font-size:0.8rem;color:var(--text-muted);margin-bottom:8px}
+.card .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:0.75rem;color:var(--text-muted);margin-bottom:8px}
+.card .meta span{background:rgba(255,255,255,.04);padding:2px 8px;border-radius:4px}
+.card .prob-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.card .prob-bar .fill{height:100%;border-radius:2px;transition:width .4s}
+.card .actions{display:flex;gap:6px;flex-wrap:wrap}
+.card .obs-preview{font-size:0.75rem;color:var(--text-muted);margin-top:6px;line-height:1.4;display:none}
+.card.expanded .obs-preview{display:block}
+.form-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.form-overlay.active{display:flex}
+.form-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.form-panel h3{margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:0.85rem;color:var(--text-muted);margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:0.9rem}
+.form-group textarea{resize:vertical;min-height:70px}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card-hover);border:1px solid var(--border);border-radius:8px;padding:14px 20px;font-size:0.85rem;z-index:200;opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.kanban{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📋 Pipeline <span>BUENOSERV</span></h1>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn btn-success" onclick="showForm()">➕ Nova Oportunidade</button>
+    <button class="btn btn-outline" onclick="refreshData()">🔄 Atualizar</button>
+  </div>
+</div>
+<div class="kanban" id="kanban"></div>
+<div class="toast" id="toast"></div>
+
+<div class="form-overlay" id="formOverlay">
+  <div class="form-panel">
+    <h2>Nova Oportunidade</h2>
+    <div class="form-group">
+      <label>Nome</label>
+      <input id="fNome" placeholder="Ex: Comissionamento SE">
+    </div>
+    <div class="form-group">
+      <label>Cliente</label>
+      <input id="fCliente" placeholder="Concessionária X">
+    </div>
+    <div class="form-group">
+      <label>Valor (R$)</label>
+      <input id="fValor" type="number" step="0.01" placeholder="50000">
+    </div>
+    <div class="form-group">
+      <label>Probabilidade (%)</label>
+      <input id="fProb" type="number" min="0" max="100" placeholder="50">
+    </div>
+    <div class="form-group">
+      <label>Estágio</label>
+      <select id="fStatus">
+        <option value="prospeccao">🟡 Prospecção</option>
+        <option value="proposta">🟠 Proposta</option>
+        <option value="fechado">🟢 Fechado</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Observação</label>
+      <textarea id="fObs" placeholder="Detalhes da oportunidade"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="hideForm()">Cancelar</button>
+      <button class="btn" onclick="addCard()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STAGES = ['prospeccao','proposta','fechado'];
+const STAGE_NAMES = {prospeccao:'🟡 Prospecção',proposta:'🟠 Proposta',fechado:'🟢 Fechado'};
+const STAGE_COLORS = {prospeccao:'#42A5F5',proposta:'#C9A84C',fechado:'#4CAF50'};
+const API_URL = '/api/pipeline';
+
+const MOCK_PIPELINE = [
+  {id:1,nome:"Comissionamento SE 138kV",cliente:"Concessionária A",valor:45000,status:"prospeccao",data:"2026-07-01",prob:30,obs:"Contato inicial realizado. Aguardando reunião técnica."},
+  {id:2,nome:"Anel DWDM 100G",cliente:"Concessionária B",valor:120000,status:"proposta",data:"2026-06-15",prob:60,obs:"Proposta enviada em 15/06. Follow-up agendado."},
+  {id:3,nome:"Consultoria Proteção",cliente:"Integradora C",valor:15000,status:"prospeccao",data:"2026-07-05",prob:20,obs:"Indicação de parceiro. Primeiro contato feito."},
+  {id:4,nome:"SCADA 3 SEs",cliente:"Concessionária D",valor:89000,status:"proposta",data:"2026-06-20",prob:50,obs:"Em negociação. Prazo para resposta: 30 dias."},
+  {id:5,nome:"Data Center TIER III",cliente:"Indústria E",valor:250000,status:"fechado",data:"2026-05-10",prob:100,obs:"Contrato assinado. Início previsto para agosto."},
+  {id:6,nome:"Rede GPON",cliente:"Concessionária F",valor:32000,status:"fechado",data:"2026-04-20",prob:100,obs:"Entregue. SAT aprovado."}
+];
+
+let DATA = [];
+let nextId = 100;
+
+function daysSince(d){const t=new Date(d),n=new Date();return Math.floor((n-t)/(864e5))||0}
+function fmtVal(v){return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2})}
+
+function loadLocal(){
+  try{const d=localStorage.getItem('buenoserv_pipeline');if(d){DATA=JSON.parse(d);const m=DATA.reduce((a,c)=>Math.max(a,c.id||0),0);if(m>=nextId)nextId=m+1;return true}}catch(e){}
+  return false;
+}
+
+function saveLocal(){
+  try{localStorage.setItem('buenoserv_pipeline',JSON.stringify(DATA))}catch(e){}
+}
+
+async function fetchData(){
+  if(loadLocal()){render();return}
+  DATA=JSON.parse(JSON.stringify(MOCK_PIPELINE));
+  nextId=100;
+  saveLocal();render();
+  try{
+    const r=await fetch(API_URL,{signal:AbortSignal.timeout(5000)});
+    if(!r.ok)throw new Error('status '+r.status);
+    const j=await r.json();
+    if(Array.isArray(j)&&j.length){DATA=j;saveLocal();render()}
+  }catch(e){console.warn('API indisponível, usando dados mockados')}
+}
+
+function render(){
+  const root=document.getElementById('kanban');
+  const grouped=STAGES.map(s=>DATA.filter(d=>d.status===s));
+  root.innerHTML=STAGES.map((s,i)=>{
+    const items=grouped[i];
+    const total=items.reduce((a,c)=>a+(c.valor||0),0);
+    const stageColor=STAGE_COLORS[s];
+    return `<div class="column" data-stage="${s}" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header" style="border-bottom-color:${stageColor}44">
+        <h2>${STAGE_NAMES[s]} <span class="badge">${items.length}</span></h2>
+        <span class="total">${fmtVal(total)}</span>
+      </div>
+      <div class="col-body" id="col-${s}">
+        ${items.map(c=>renderCard(c)).join('')}
+      </div>
+    </div>`
+  }).join('');
+}
+
+function renderCard(c){
+  const days=daysSince(c.data);
+  const color=STAGE_COLORS[c.status]||STAGE_COLORS.prospeccao;
+  return `<div class="card" draggable="true" data-id="${c.id}" data-status="${c.status}"
+    ondragstart="onDragStart(event)" ondragend="onDragEnd(event)"
+    onclick="toggleCard(this)">
+    <h3>${c.nome}</h3>
+    <div class="client">${c.cliente}</div>
+    <div class="meta">
+      <span>${fmtVal(c.valor)}</span>
+      <span>${c.prob}%</span>
+      <span>${c.data}</span>
+      <span>${days}d</span>
+    </div>
+    <div class="prob-bar"><div class="fill" style="width:${c.prob}%;background:${color}"></div></div>
+    <div class="actions">
+      ${c.status!=='fechado'?`<button class="btn btn-sm btn-info" data-action="move" onclick="event.stopPropagation();moveCard(${c.id})">➡ Mover</button>`:''}
+      <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();removeCard(${c.id})">🗑</button>
+    </div>
+    <div class="obs-preview">${c.obs||''}</div>
+  </div>`
+}
+
+function toggleCard(el){
+  if(el.classList.contains('dragging'))return;
+  el.classList.toggle('expanded');
+}
+
+let dragId=null;
+function onDragStart(e){
+  const card=e.target.closest('.card');
+  if(!card)return;
+  dragId=Number(card.dataset.id);
+  card.classList.add('dragging');
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',dragId);
+}
+function onDragEnd(e){
+  document.querySelectorAll('.card.dragging').forEach(c=>c.classList.remove('dragging'));
+  document.querySelectorAll('.column.drag-over').forEach(c=>c.classList.remove('drag-over'));
+}
+function onDragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect='move';
+  const col=e.target.closest('.column');
+  if(col)col.classList.add('drag-over');
+}
+function onDragLeave(e){
+  const col=e.target.closest('.column');
+  if(col)col.classList.remove('drag-over');
+}
+function onDrop(e){
+  e.preventDefault();
+  document.querySelectorAll('.column.drag-over').forEach(c=>c.classList.remove('drag-over'));
+  const col=e.target.closest('.column');
+  if(!col||dragId===null)return;
+  const newStatus=col.dataset.stage;
+  const item=DATA.find(d=>d.id===dragId);
+  if(item&&item.status!==newStatus){
+    item.status=newStatus;
+    if(newStatus==='fechado')item.prob=100;
+    saveLocal();render();toast(`Movido para ${STAGE_NAMES[newStatus]}`);
+  }
+  dragId=null;
+}
+
+function moveCard(id){
+  const item=DATA.find(d=>d.id===id);
+  if(!item)return;
+  const idx=STAGES.indexOf(item.status);
+  if(idx<STAGES.length-1){
+    item.status=STAGES[idx+1];
+    if(item.status==='fechado')item.prob=100;
+    saveLocal();render();toast(`Movido para ${STAGE_NAMES[item.status]}`);
+  }else{toast('Oportunidade já está em Fechado')}
+}
+
+function removeCard(id){
+  if(!confirm('Remover esta oportunidade?'))return;
+  DATA=DATA.filter(d=>d.id!==id);
+  saveLocal();render();toast('Oportunidade removida');
+}
+
+function showForm(){
+  document.getElementById('formOverlay').classList.add('active');
+  document.getElementById('fNome').value='';
+  document.getElementById('fCliente').value='';
+  document.getElementById('fValor').value='';
+  document.getElementById('fProb').value='';
+  document.getElementById('fStatus').value='prospeccao';
+  document.getElementById('fObs').value='';
+}
+function hideForm(){document.getElementById('formOverlay').classList.remove('active')}
+
+function addCard(){
+  const nome=document.getElementById('fNome').value.trim();
+  const cliente=document.getElementById('fCliente').value.trim();
+  const valor=parseFloat(document.getElementById('fValor').value)||0;
+  const prob=parseInt(document.getElementById('fProb').value)||0;
+  const status=document.getElementById('fStatus').value;
+  const obs=document.getElementById('fObs').value.trim();
+  if(!nome||!cliente){toast('Preencha nome e cliente');return}
+  const today=new Date().toISOString().slice(0,10);
+  DATA.push({id:nextId++,nome,cliente,valor,status,data:today,prob,obs});
+  saveLocal();render();hideForm();toast('Oportunidade adicionada!');
+}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+function refreshData(){fetchData();toast('Atualizado')}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  fetchData();
+  setInterval(fetchData,60000);
+  document.getElementById('formOverlay').addEventListener('click',e=>{
+    if(e.target===e.currentTarget)hideForm();
+  });
+});
+</script>
+</body>
+</html>

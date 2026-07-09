@@ -1,0 +1,161 @@
+[
+  {
+    "id": "6ff93f30e6d2",
+    "fonte": "ANEEL",
+    "titulo": "Edital de chamamento para projetos de P&D estratégico — transmissão",
+    "data_identificacao": "2026-07-08T21:13:09.029493",
+    "prazo": "2026-08-09T21:13:09.029493",
+    "keywords_match": [
+      "transmissão energia"
+    ],
+    "status": "nova",
+    "probabilidade": "média",
+    "estimativa_receita": "R$ 5M-15M"
+  },
+  {
+    "id": "b2dd88a613b3",
+    "fonte": "ANEEL",
+    "titulo": "Leilão de Transmissão nº 02/2026 — lotes BA/MG (138kV e 230kV)",
+    "data_identificacao": "2026-07-08T21:13:09.029785",
+    "prazo": "2026-08-08T21:13:09.029785",
+    "keywords_match": [
+      "licitação subestação",
+      "comissionamento elétrico",
+      "proteção SE",
+      "telecom energia",
+      "leilão ANEEL",
+      "transmissão energia"
+    ],
+    "status": "nova",
+    "probabilidade": "média",
+    "estimativa_receita": "R$ 15M-50M"
+  },
+  {
+    "id": "0cc2282fa590",
+    "fonte": "ComprasNet",
+    "titulo": "Pregão 103/2026 — modernização de sistemas SCADA e telecom",
+    "data_identificacao": "2026-07-08T21:13:09.030079",
+    "prazo": "2026-08-20T21:13:09.030079",
+    "keywords_match": [
+      "licitação subestação",
+      "comissionamento elétrico",
+      "proteção SE",
+      "telecom energia",
+      "leilão ANEEL",
+      "transmissão energia"
+    ],
+    "status": "nova",
+    "probabilidade": "média",
+    "estimativa_receita": "R$ 500k-2M"
+  },
+  {
+    "id": "bfd55af67ee3",
+    "fonte": "ComprasNet",
+    "titulo": "Concorrência 42/2026 — ampliação de subestação 230kV em SP",
+    "data_identificacao": "2026-07-08T21:13:09.030257",
+    "prazo": "2026-09-05T21:13:09.030257",
+    "keywords_match": [
+      "licitação subestação"
+    ],
+    "status": "nova",
+    "probabilidade": "alta",
+    "estimativa_receita": "R$ 2M-5M"
+  },
+  {
+    "id": "d83a0caa12c6",
+    "fonte": "DOE",
+    "titulo": "Portaria MMA 89/2026 — licenciamento ambiental de LT e SE",
+    "data_identificacao": "2026-07-08T21:13:09.030436",
+    "prazo": "2026-08-02T21:13:09.030436",
+    "keywords_match": [
+      "licitação subestação",
+      "comissionamento elétrico",
+      "proteção SE",
+      "telecom energia",
+      "leilão ANEEL",
+      "transmissão energia"
+    ],
+    "status": "nova",
+    "probabilidade": "baixa",
+    "estimativa_receita": "R$ 500k-2M"
+  },
+  {
+    "id": "7ae559ca4779",
+    "fonte": "DOE",
+    "titulo": "Despacho ONS 789/2026 — requisitos de proteção e teleproteção",
+    "data_identificacao": "2026-07-08T21:13:09.030587",
+    "prazo": "2026-07-24T21:13:09.030587",
+    "keywords_match": [
+      "licitação subestação",
+      "comissionamento elétrico",
+      "proteção SE",
+      "telecom energia",
+      "leilão ANEEL",
+      "transmissão energia"
+    ],
+    "status": "nova",
+    "probabilidade": "alta",
+    "estimativa_receita": "R$ 500k-2M"
+  },
+  {
+    "id": "f47dc6304daa",
+    "fonte": "ANEEL",
+    "titulo": "Leilão A-5 reserva de capacidade — subestações 345kV",
+    "data_identificacao": "2026-07-08T21:13:09.257479",
+    "prazo": "2026-09-02T21:13:09.257479",
+    "keywords_match": [
+      "leilão ANEEL"
+    ],
+    "status": "nova",
+    "probabilidade": "baixa",
+    "estimativa_receita": "R$ 15M-50M"
+  },
+  {
+    "id": "9e06a42e53ae",
+    "fonte": "ANEEL",
+    "titulo": "Audiência Pública AP 023/2026 — revisão dos procedimentos de rede",
+    "data_identificacao": "2026-07-08T21:13:09.257753",
+    "prazo": "2026-09-05T21:13:09.257753",
+    "keywords_match": [],
+    "status": "nova",
+    "probabilidade": "alta",
+    "estimativa_receita": "R$ 500k-2M"
+  },
+  {
+    "id": "fcb2fa4f76f8",
+    "fonte": "ComprasNet",
+    "titulo": "Concorrência 31/2026 — implantação de fibra óptica em LT 230kV",
+    "data_identificacao": "2026-07-08T21:13:09.258174",
+    "prazo": "2026-08-18T21:13:09.258174",
+    "keywords_match": [],
+    "status": "nova",
+    "probabilidade": "média",
+    "estimativa_receita": "R$ 15M-50M"
+  },
+  {
+    "id": "f40fd46a2016",
+    "fonte": "ComprasNet",
+    "titulo": "Pregão 67/2026 — contratação de engenharia para proteção SE",
+    "data_identificacao": "2026-07-08T21:13:09.258458",
+    "prazo": "2026-08-22T21:13:09.258458",
+    "keywords_match": [
+      "proteção SE"
+    ],
+    "status": "nova",
+    "probabilidade": "média",
+    "estimativa_receita": "R$ 500k-2M"
+  },
+  {
+    "id": "6d7d8e3e1212",
+    "fonte": "DOE",
+    "titulo": "Despacho ANEEL 1.234/2026 — aprova ED de subestação 500kV",
+    "data_identificacao": "2026-07-08T21:13:09.258754",
+    "prazo": "2026-07-19T21:13:09.258754",
+    "keywords_match": [
+      "licitação subestação"
+    ],
+    "status": "nova",
+    "probabilidade": "baixa",
+    "estimativa_receita": "R$ 500k-2M"
+  }
+]

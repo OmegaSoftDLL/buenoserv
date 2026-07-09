@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BUENOSERV — Executive Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0f1e;color:#e0e0e0;padding:20px;min-height:100vh}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding:20px 24px;background:linear-gradient(135deg,#111827,#1a1a3e);border-radius:12px;border:1px solid rgba(201,168,76,.15)}
+.dash-header h1{font-size:1.4rem;color:#fff;letter-spacing:-.3px}
+.dash-header h1 span{color:#C9A84C}
+.dash-header .time{color:rgba(255,255,255,.4);font-size:.8rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px}
+.card{background:linear-gradient(135deg,#111827,#1a1a3e);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)}
+.card .label{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.4);margin-bottom:8px}
+.card .value{font-size:1.8rem;font-weight:700;color:#fff}
+.card .value.gold{color:#C9A84C}
+.card .value.green{color:#4CAF50}
+.card .value.red{color:#EF5350}
+.card .sub{font-size:.8rem;color:rgba(255,255,255,.3);margin-top:4px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:linear-gradient(135deg,#111827,#1a1a3e);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)}
+.chart-card h3{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.table-card{background:linear-gradient(135deg,#111827,#1a1a3e);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06);margin-bottom:16px}
+.table-card h3{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;padding:10px 8px;color:rgba(255,255,255,.4);font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-transform:uppercase;letter-spacing:.5px;font-size:.7rem}
+td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.7)}
+tr:hover td{background:rgba(255,255,255,.02)}
+.status{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.7rem;font-weight:600}
+.status.proposta{background:rgba(201,168,76,.15);color:#C9A84C}
+.status.prospeccao{background:rgba(33,150,243,.15);color:#42A5F5}
+.status.concluido{background:rgba(76,175,80,.15);color:#4CAF50}
+.loading{text-align:center;padding:40px;color:rgba(255,255,255,.3)}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="dash-header">
+<div><h1>BUENOSERV <span>Executive Dashboard</span></h1></div>
+<div class="time" id="dataAtual"></div>
+</div>
+<div class="grid" id="cardsMetricas"><div class="loading">Carregando...</div></div>
+<div class="charts-row">
+<div class="chart-card"><h3>📈 Receita & Pipeline</h3><canvas id="chartReceita"></canvas></div>
+<div class="chart-card"><h3>📊 Prospecções por Estágio</h3><canvas id="chartProspeccao"></canvas></div>
+</div>
+<div class="charts-row">
+<div class="chart-card"><h3>🎯 Probabilidade de Fechamento</h3><canvas id="chartProb"></canvas></div>
+<div class="chart-card"><h3>📅 Atividade Comercial</h3><canvas id="chartAtividade"></canvas></div>
+</div>
+<div class="table-card"><h3>📋 Pipeline Comercial</h3><table><thead><tr><th>Oportunidade</th><th>Cliente</th><th>Valor</th><th>Prob</th><th>Estágio</th><th>Data</th></tr></thead><tbody id="tbodyPipeline"><tr><td colspan="6" class="loading">Carregando...</td></tr></tbody></table></div>
+<div class="table-card"><h3>🏗️ Projetos Ativos</h3><table><thead><tr><th>Projeto</th><th>Cliente</th><th>Fases</th><th>Status</th></tr></thead><tbody id="tbodyProjetos"><tr><td colspan="4" class="loading">Carregando...</td></tr></tbody></table></div>
+
+<script>
+document.getElementById('dataAtual').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).replace(/^./,m=>m.toUpperCase());
+
+async function carregar(){
+try{
+const r=await fetch('/api/state');const s=await r.json();
+const pipeline=[];
+for(const[proj,tasks]of Object.entries(s.tasks||{})){
+for(const t of tasks){
+if(t.agente==='comercial'&&t.observacao){
+const m=t.observacao.match(/R[\$]?\s*([\d.]+)/);
+const v=m?parseFloat(m[1].replace(/\./g,'')):0;
+pipeline.push({projeto:proj,valor:v,data:t.timestamp?t.timestamp.slice(0,10):'-',status:t.status,obs:t.observacao});
+}}}
+const props=pipeline.filter(p=>p.status==='concluido');
+const prosp=pipeline.filter(p=>p.status!=='concluido');
+const pv=pipeline.reduce((s,o)=>s+o.valor,0);
+const prospeccoes=prosp.length;
+const propostas=props.length;
+const evol=s.evolucao_progresso?`${s.evolucao_progresso.concluidas.length}/${s.evolucao_progresso.total_frentes}`:'-';
+const scripts=s.scripts_disponiveis?s.scripts_disponiveis.length:0;
+
+document.getElementById('cardsMetricas').innerHTML=`
+<div class="card"><div class="label">Agentes</div><div class="value">${s.agent_count||81}</div><div class="sub">especialidades técnicas</div></div>
+<div class="card"><div class="label">Pipeline Total</div><div class="value gold">R$${(pv/1e6).toFixed(2)}M</div><div class="sub">${pipeline.length} oportunidades</div></div>
+<div class="card"><div class="label">Propostas</div><div class="value gold">${propostas}</div><div class="sub">enviadas</div></div>
+<div class="card"><div class="label">Prospecções</div><div class="value green">${prospeccoes}</div><div class="sub">em andamento</div></div>
+<div class="card"><div class="label">Scripts</div><div class="value">${scripts}</div><div class="sub">de automação</div></div>
+<div class="card"><div class="label">Evolução</div><div class="value gold">${evol}</div><div class="sub">frentes concluídas</div></div>
+<div class="card"><div class="label">Receita Mensal</div><div class="value green">R$${((s.dre?.meses?.['7']?.receita_bruta||0)/1e3).toFixed(1)}k</div><div class="sub">último DRE</div></div>
+<div class="card"><div class="label">Lucro Líquido</div><div class="value">R$${((s.dre?.meses?.['7']?.lucro_liquido||0)/1e3).toFixed(1)}k</div><div class="sub">margem ${s.dre?.meses?.['7']?.receita_bruta?((s.dre.meses['7'].lucro_liquido/s.dre.meses['7'].receita_bruta)*100).toFixed(0):'-'}%</div></div>
+`;
+
+// Charts
+const coresPipe=['#C9A84C','#42A5F5','#4CAF50','#EF5350','#AB47BC','#26C6DA'];
+const ctx1=document.getElementById('chartReceita').getContext('2d');
+new Chart(ctx1,{type:'doughnut',data:{labels:['Propostas','Prospecções'],datasets:[{data:[propostas,prospeccoes],backgroundColor:['#C9A84C','#42A5F5'],borderWidth:0}]},options:{plugins:{legend:{labels:{color:'rgba(255,255,255,.5)',padding:16,font:{size:11}}}}}});
+
+const ctx2=document.getElementById('chartProspeccao').getContext('2d');
+const estagios={};
+pipeline.forEach(p=>{const e=p.status==='concluido'?'Proposta':'Prospecção';estagios[e]=(estagios[e]||0)+1});
+new Chart(ctx2,{type:'bar',data:{labels:Object.keys(estagios),datasets:[{label:'Qtd',data:Object.values(estagios),backgroundColor:['#C9A84C','#42A5F5'],borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'rgba(255,255,255,.3)'}},x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.5)'}}}}});
+
+const ctx3=document.getElementById('chartProb').getContext('2d');
+const probs=pipeline.map(p=>({label:p.projeto.slice(0,15),prob:p.status==='concluido'?50:10}));
+new Chart(ctx3,{type:'polarArea',data:{labels:probs.map(p=>p.label),datasets:[{data:probs.map(p=>p.prob),backgroundColor:coresPipe.slice(0,probs.length),borderWidth:0}]},options:{plugins:{legend:{labels:{color:'rgba(255,255,255,.5)',font:{size:10}}}}}});
+
+const ctx4=document.getElementById('chartAtividade').getContext('2d');
+const dias={};
+pipeline.forEach(p=>{if(p.data){const d=p.data.slice(5,7);dias[d]=(dias[d]||0)+1}});
+const meses=Object.keys(dias).sort();
+new Chart(ctx4,{type:'line',data:{labels:meses.map(m=>`Mês ${m}`),datasets:[{label:'Atividades',data:meses.map(m=>dias[m]),borderColor:'#C9A84C',backgroundColor:'rgba(201,168,76,.1)',fill:true,tension:.4,pointBackgroundColor:'#C9A84C',pointRadius:4}]},options:{plugins:{legend:{labels:{color:'rgba(255,255,255,.5)',font:{size:11}}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'rgba(255,255,255,.3)'}},x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.5)'}}}}});
+
+// Pipeline table
+const tb1=document.getElementById('tbodyPipeline');
+tb1.innerHTML=pipeline.map((o,i)=>{
+const sc=o.status==='concluido'?'proposta':'prospeccao';
+const lb=o.status==='concluido'?'Proposta':'Prospecção';
+return `<tr><td><b style="color:#fff">OP-${String(i+1).padStart(3,'0')}</b></td><td>${o.projeto.slice(0,25)}</td><td style="color:#C9A84C">${o.valor?'R$'+(o.valor/1e3).toFixed(0)+'k':'-'}</td><td>${o.status==='concluido'?'50%':'10%'}</td><td><span class="status ${sc}">${lb}</span></td><td>${o.data}</td></tr>`;
+}).join('');
+
+// Projects table
+const tb2=document.getElementById('tbodyProjetos');
+(s.projects||[]).forEach(p=>{
+const fases=Object.entries(p.fases||{}).map(([k,v])=>`${k}:${v.status}`).join(', ');
+tb2.innerHTML+=`<tr><td><b style="color:#fff">${p.nome.slice(0,30)}</b></td><td>${p.cliente}</td><td style="font-size:.75rem;color:rgba(255,255,255,.5)">${fases}</td><td><span class="status proposta">${p.status}</span></td></tr>`;
+});
+
+}catch(e){document.querySelector('.grid').innerHTML=`<div class="card" style="grid-column:1/-1;text-align:center;color:#EF5350">❌ Erro: ${e.message}</div>`;}
+}
+carregar();
+setInterval(carregar,30000);
+</script>
+</body>
+</html>

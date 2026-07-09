@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-07-08_2119",
+  "iso": "2026-07-08T21:19:21.014194",
+  "correcoes": 4,
+  "erros_graves": 0,
+  "detalhes_correcoes": [
+    "PERMISSÕES — Scripts .py sem +x",
+    "SEÇÕES — Workflow e Competências Técnicas ausentes",
+    "API — gen_api.py na porta 8090",
+    "ÓRFÃOS — Scripts sem entrada no state"
+  ],
+  "detalhes_erros": []
+}

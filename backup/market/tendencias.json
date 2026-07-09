@@ -1,0 +1,44 @@
+[
+  {
+    "titulo": "Crescimento de 23% em investimentos em transmissão previsto para 2027",
+    "data_identificacao": "2026-07-08T21:13:09.035417",
+    "categoria": "macroeconômica",
+    "impacto": "médio",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  },
+  {
+    "titulo": "Demanda aquecida por sistemas de proteção digital IEC 61850",
+    "data_identificacao": "2026-07-08T21:13:09.035579",
+    "categoria": "regulatória",
+    "impacto": "médio",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  },
+  {
+    "titulo": "Expansão do mercado de SCADA/ADMS no Brasil pós-privatizações",
+    "data_identificacao": "2026-07-08T21:13:09.035663",
+    "categoria": "macroeconômica",
+    "impacto": "alto",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  },
+  {
+    "titulo": "Nova regulação ANEEL exige telemonitoramento em todas as SE acima de 138kV",
+    "data_identificacao": "2026-07-08T21:13:09.035716",
+    "categoria": "tecnológica",
+    "impacto": "alto",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  },
+  {
+    "titulo": "Escassez de mão de obra especializada em comissionamento elétrico",
+    "data_identificacao": "2026-07-08T21:13:09.035763",
+    "categoria": "macroeconômica",
+    "impacto": "alto",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  },
+  {
+    "titulo": "Abertura de novas frentes em energia offshore e hidrogênio verde",
+    "data_identificacao": "2026-07-08T21:13:09.035811",
+    "categoria": "tecnológica",
+    "impacto": "alto",
+    "detalhes": "Identificado em 08/07/2026 — monitoramento contínuo."
+  }
+]
