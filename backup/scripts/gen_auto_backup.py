@@ -46,12 +46,21 @@ def run(cmd, cwd=None, check=True):
     return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=check)
 
 
+def _get_auth_url():
+    r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
+    token = r.stdout.strip()
+    if token and len(token) > 10:
+        return f"https://OmegaSoftDLL:{token}@github.com/OmegaSoftDLL/buenoserv.git"
+    return REPO_URL
+
 def ensure_repo():
+    auth_url = _get_auth_url()
     if not os.path.isdir(REPO_DIR):
         log_info("Clonando repositório...")
-        run(["git", "clone", REPO_URL, REPO_DIR])
+        run(["git", "clone", auth_url, REPO_DIR])
         log_ok("Repositório clonado")
     else:
+        run(["git", "remote", "set-url", "origin", auth_url], cwd=REPO_DIR)
         run(["git", "fetch", "origin"], cwd=REPO_DIR)
         run(["git", "reset", "--hard", "origin/master"], cwd=REPO_DIR)
 
