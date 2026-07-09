@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — CEO Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a1628;color:#e0e0e0;padding:24px;min-height:100vh}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.header .logo{font-size:1.5rem;font-weight:700;letter-spacing:-.5px}
+.header .logo .gold{color:#C9A84C}
+.header .logo .blue{color:#e0e0e0}
+.header .status-badge{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:24px;font-size:.85rem;font-weight:600}
+.status-badge.operacional{background:#1a3a1a;color:#4caf50;border:1px solid #4caf50}
+.status-badge.atencao{background:#3a3010;color:#ffc107;border:1px solid #ffc107}
+.status-badge.critico{background:#3a1010;color:#f44336;border:1px solid #f44336}
+.header .updated{font-size:.75rem;color:#6b7a8f}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:28px}
+.card{background:#0f1d35;border-radius:12px;padding:20px;border:1px solid #1a2d4a;transition:border .2s}
+.card:hover{border-color:#C9A84C44}
+.card .label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:#6b7a8f;margin-bottom:6px}
+.card .value{font-size:1.8rem;font-weight:700;color:#e0e0e0}
+.card .value.gold{color:#C9A84C}
+.card .value.green{color:#4caf50}
+.card .value.red{color:#f44336}
+.card .sub{font-size:.8rem;color:#6b7a8f;margin-top:4px}
+.card .sub .up{color:#4caf50}
+.card .sub .down{color:#f44336}
+.section{margin-bottom:28px}
+.section-title{font-size:1rem;font-weight:600;color:#C9A84C;margin-bottom:16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1a2d4a;padding-bottom:8px}
+.chart-container{background:#0f1d35;border-radius:12px;padding:20px;border:1px solid #1a2d4a;position:relative;height:320px}
+table{width:100%;border-collapse:collapse;background:#0f1d35;border-radius:12px;overflow:hidden;border:1px solid #1a2d4a}
+th,td{padding:12px 16px;text-align:left;font-size:.82rem;border-bottom:1px solid #1a2d4a}
+th{background:#0d1a2e;color:#C9A84C;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px}
+tr:hover{background:#122244}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
+.badge.fail{background:#3a1010;color:#f44336;border:1px solid #f4433666}
+.badge.warn{background:#3a3010;color:#ffc107;border:1px solid #ffc10766}
+.badge.pass{background:#1a3a1a;color:#4caf50;border:1px solid #4caf5066}
+.action-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.action-card{background:#0f1d35;border-radius:10px;padding:16px;border:1px solid #1a2d4a;cursor:pointer;transition:all .2s;text-decoration:none;color:inherit;display:block}
+.action-card:hover{border-color:#C9A84C;background:#122244;transform:translateY(-1px)}
+.action-card .icon{font-size:1.3rem;margin-bottom:6px}
+.action-card .title{font-weight:600;color:#e0e0e0;margin-bottom:2px}
+.action-card .desc{font-size:.78rem;color:#6b7a8f}
+.timeline{background:#0f1d35;border-radius:12px;border:1px solid #1a2d4a;padding:4px 0}
+.timeline-item{display:flex;align-items:flex-start;gap:14px;padding:12px 20px;border-left:2px solid #1a2d4a;margin-left:16px;position:relative}
+.timeline-item::before{content:'';position:absolute;left:-7px;top:18px;width:12px;height:12px;border-radius:50%;background:#1a2d4a;border:2px solid #0a1628}
+.timeline-item .dot{position:absolute;left:-7px;top:18px;width:12px;height:12px;border-radius:50%;background:#C9A84C;border:2px solid #0a1628}
+.timeline-item .time{font-size:.72rem;color:#6b7a8f;white-space:nowrap;min-width:80px;padding-top:1px}
+.timeline-item .content{flex:1}
+.timeline-item .content .task-name{font-weight:600;font-size:.85rem}
+.timeline-item .content .task-detail{font-size:.78rem;color:#6b7a8f;margin-top:2px}
+.loading{text-align:center;padding:40px;color:#6b7a8f}
+.loading .spinner{display:inline-block;width:32px;height:32px;border:3px solid #1a2d4a;border-top-color:#C9A84C;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{text-align:center;padding:24px;color:#f44336;background:#1a0a0a;border-radius:12px;border:1px solid #f4433644;font-size:.9rem}
+.error-box .sub{color:#6b7a8f;font-size:.8rem;margin-top:4px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){
+body{padding:16px}
+.header .logo{font-size:1.2rem}
+.grid{grid-template-columns:1fr 1fr}
+.two-col{grid-template-columns:1fr}
+.chart-container{height:260px}
+.action-list{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+.grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo"><span class="gold">BUENOSERV</span> <span class="blue">CEO Dashboard</span></div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<div class="status-badge operacional" id="statusBadge">🟢 OPERACIONAL</div>
+<div class="updated" id="updatedAt">—</div>
+</div>
+</div>
+
+<div class="grid" id="cardsGrid">
+<div class="loading"><div class="spinner"></div>Carregando indicadores...</div>
+</div>
+
+<div class="section">
+<div class="section-title">📊 Receita & Lucro (últimos 6 meses)</div>
+<div class="chart-container" id="chartContainer">
+<div class="loading" id="chartLoading"><div class="spinner"></div>Carregando gráfico...</div>
+<canvas id="revenueChart" style="display:none"></canvas>
+</div>
+</div>
+
+<div class="two-col">
+<div class="section">
+<div class="section-title">🔔 Alertas do Sistema</div>
+<table><thead><tr><th>Componente</th><th>Status</th><th>Mensagem</th></tr></thead>
+<tbody id="alertsBody"><tr><td colspan="3" class="loading">Carregando...</td></tr></tbody></table>
+</div>
+
+<div class="section">
+<div class="section-title">💡 Ações Recomendadas</div>
+<div class="action-list" id="actionsContainer">
+<div class="loading"><div class="spinner"></div>Analisando...</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📋 Timeline de Atividades</div>
+<div class="timeline" id="timelineContainer">
+<div class="loading"><div class="spinner"></div>Carregando timeline...</div>
+</div>
+</div>
+
+<script>
+const MOCK_DATA = {
+summary: {
+agent_count: 81,
+agent_variation: '+3',
+pipeline_total: 1250000,
+pipeline_opportunities: 14,
+dre_month_revenue: 487000,
+dre_month_profit: 124000,
+scripts_total: 47,
+scripts_last_update: '2026-07-06',
+revenue_history: [
+{month:'Fev', revenue: 380000, profit: 92000},
+{month:'Mar', revenue: 410000, profit: 105000},
+{month:'Abr', revenue: 395000, profit: 98000},
+{month:'Mai', revenue: 445000, profit: 112000},
+{month:'Jun', revenue: 468000, profit: 118000},
+{month:'Jul', revenue: 487000, profit: 124000}
+],
+alerts: [
+{component: 'api-gateway', status: 'PASS', message: 'Tudo ok'},
+{component: 'database', status: 'PASS', message: 'Conectado'},
+{component: 'pipeline-worker', status: 'WARN', message: 'Latência acima de 2s'},
+{component: 'backup-service', status: 'FAIL', message: 'Faz 48h sem backup'},
+{component: 'telegram-bot', status: 'PASS', message: 'Online'}
+],
+tasks: {
+'Gestão Financeira': [
+{task: 'Fechamento DRE Julho', status: 'concluido', timestamp: '2026-07-08T10:30:00', agente: 'financeiro'},
+{task: 'Revisão de budget Q3', status: 'em_andamento', timestamp: '2026-07-07T14:00:00', agente: 'financeiro'},
+{task: 'NF-e pendentes', status: 'pendente', timestamp: '2026-07-06T09:00:00', agente: 'financeiro'}
+],
+'Comercial': [
+{task: 'Proposta Concreteira XYZ', status: 'concluido', timestamp: '2026-07-08T08:00:00', agente: 'comercial'},
+{task: 'Follow-up MRV', status: 'em_andamento', timestamp: '2026-07-07T11:00:00', agente: 'comercial'},
+{task: 'RFP Prefeitura', status: 'pendente', timestamp: '2026-07-05T16:00:00', agente: 'comercial'}
+],
+'Operações': [
+{task: 'Backup servidor', status: 'concluido', timestamp: '2026-07-07T23:00:00', agente: 'infra'},
+{task: 'Atualização ERP', status: 'pendente', timestamp: '2026-07-04T15:00:00', agente: 'infra'}
+],
+'RH': [
+{task: 'Holerite mensal', status: 'concluido', timestamp: '2026-07-05T18:00:00', agente: 'rh'},
+{task: 'Contratação dev', status: 'em_andamento', timestamp: '2026-07-03T10:00:00', agente: 'rh'}
+]
+}
+}
+};
+
+let chartInstance = null;
+
+async function fetchData() {
+try {
+const [summaryResp, healthResp] = await Promise.all([
+fetch('http://localhost:8090/api/summary'),
+fetch('http://localhost:8090/api/health')
+]);
+if (!summaryResp.ok || !healthResp.ok) throw new Error('HTTP ' + (!summaryResp.ok ? summaryResp.status : healthResp.status));
+return {
+summary: await summaryResp.json(),
+health: await healthResp.json()
+};
+} catch (e) {
+console.warn('API failed, using mock data:', e.message);
+return {
+summary: MOCK_DATA.summary,
+health: MOCK_DATA.summary
+};
+}
+}
+
+function getOverallStatus(summary) {
+if (!summary || !summary.alerts) return 'operacional';
+const hasFail = summary.alerts.some(a => a.status === 'FAIL');
+const hasWarn = summary.alerts.some(a => a.status === 'WARN');
+if (hasFail) return 'critico';
+if (hasWarn) return 'atencao';
+return 'operacional';
+}
+
+function renderStatusBadge(status) {
+const badge = document.getElementById('statusBadge');
+const labels = {operacional: '🟢 OPERACIONAL', atencao: '🟡 ATENÇÃO', critico: '🔴 CRÍTICO'};
+badge.textContent = labels[status] || labels.operacional;
+badge.className = 'status-badge ' + status;
+}
+
+function renderCards(summary) {
+if (!summary) {
+document.getElementById('cardsGrid').innerHTML = '<div class="error-box">Sem dados disponíveis</div>';
+return;
+}
+const agt = summary.agent_count || 0;
+const agtVar = summary.agent_variation || '0';
+const agtDir = agtVar.startsWith('+') ? 'up' : 'down';
+const pip = summary.pipeline_total || 0;
+const opp = summary.pipeline_opportunities || 0;
+const rev = summary.dre_month_revenue || 0;
+const prof = summary.dre_month_profit || 0;
+const scr = summary.scripts_total || 0;
+const scrUpd = summary.scripts_last_update || '—';
+document.getElementById('cardsGrid').innerHTML = `
+<div class="card"><div class="label">🤖 Agentes</div><div class="value gold">${agt}</div><div class="sub">Variação <span class="${agtDir}">${agtVar}</span> na semana</div></div>
+<div class="card"><div class="label">📈 Pipeline</div><div class="value gold">R$ ${(pip/1000).toFixed(0)}k</div><div class="sub">${opp} oportunidades ativas</div></div>
+<div class="card"><div class="label">💰 DRE — Receita do Mês</div><div class="value">R$ ${(rev/1000).toFixed(1)}k</div><div class="sub">Lucro líquido: R$ ${(prof/1000).toFixed(1)}k <span class="up">(+${prof > 0 ? ((prof/rev)*100).toFixed(0) : 0}%)</span></div></div>
+<div class="card"><div class="label">📜 Scripts</div><div class="value green">${scr}</div><div class="sub">Última atualização: ${scrUpd}</div></div>
+`;
+}
+
+function renderAlerts(alerts) {
+const tbody = document.getElementById('alertsBody');
+if (!alerts || alerts.length === 0) {
+tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#6b7a8f">Nenhum alerta</td></tr>';
+return;
+}
+const filtered = alerts.filter(a => a.status === 'FAIL' || a.status === 'WARN');
+if (filtered.length === 0) {
+tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#4caf50">✅ Todos os sistemas operacionais</td></tr>';
+return;
+}
+tbody.innerHTML = filtered.map(a => `<tr>
+<td>${a.component || '—'}</td>
+<td><span class="badge ${a.status === 'FAIL' ? 'fail' : 'warn'}">${a.status}</span></td>
+<td style="color:${a.status === 'FAIL' ? '#f44336' : '#ffc107'}">${a.message || '—'}</td>
+</tr>`).join('');
+}
+
+function renderActions(summary) {
+const container = document.getElementById('actionsContainer');
+if (!summary) {
+container.innerHTML = '<div class="error-box">Sem dados para análise</div>';
+return;
+}
+const alerts = summary.alerts || [];
+const hasFail = alerts.some(a => a.status === 'FAIL');
+const hasWarn = alerts.some(a => a.status === 'WARN');
+const actions = [];
+if (hasFail) {
+actions.push({icon:'⚡', title:'Executar autopilot — recuperação', desc:'Corrigir falhas críticas detectadas no sistema', cmd:'opencode exec autopilot --mode recovery'});
+} else {
+actions.push({icon:'🔄', title:'Executar autopilot — manutenção', desc:'Verificação preventiva de todos os serviços', cmd:'opencode exec autopilot'});
+}
+actions.push({icon:'📊', title:'Gerar relatório semanal', desc:'Compilar indicadores da semana em PDF', cmd:'opencode exec report --type weekly'});
+if (hasWarn) {
+actions.push({icon:'🔍', title:'Verificar pipeline — alertas WARN', desc:'Investigar componentes com latência/ressalvas', cmd:'opencode exec pipeline --check-warnings'});
+} else {
+actions.push({icon:'📋', title:'Verificar pipeline comercial', desc:'Revisar oportunidades e próximos passos', cmd:'opencode exec pipeline --review'});
+}
+container.innerHTML = actions.map(a => {
+const encoded = encodeURIComponent(a.cmd);
+return `<a class="action-card" href="javascript:void(0)" onclick="execAction('${encoded}')">
+<div class="icon">${a.icon}</div>
+<div class="title">${a.title}</div>
+<div class="desc">${a.desc}</div>
+</a>`;
+}).join('');
+}
+
+function execAction(encoded) {
+const cmd = decodeURIComponent(encoded);
+if (confirm(`Executar: ${cmd}`)) {
+fetch('/api/exec', {
+method: 'POST',
+headers: {'Content-Type': 'application/json'},
+body: JSON.stringify({command: cmd})
+}).then(r => {
+if (r.ok) alert('Comando enviado com sucesso!');
+else alert('Erro ao executar comando');
+}).catch(() => alert('Erro de conexão'));
+}
+}
+
+function renderTimeline(tasks) {
+const container = document.getElementById('timelineContainer');
+if (!tasks) {
+container.innerHTML = '<div style="text-align:center;padding:20px;color:#6b7a8f">Sem atividades registradas</div>';
+return;
+}
+const items = [];
+for (const [project, taskList] of Object.entries(tasks)) {
+for (const t of taskList) {
+if (t.timestamp) {
+items.push({project, ...t});
+}
+}
+}
+items.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+const last10 = items.slice(0, 10);
+if (last10.length === 0) {
+container.innerHTML = '<div style="text-align:center;padding:20px;color:#6b7a8f">Nenhuma atividade registrada</div>';
+return;
+}
+container.innerHTML = last10.map(t => {
+const d = new Date(t.timestamp);
+const time = d.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}) + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+const statusMap = {concluido:'✅', em_andamento:'🔄', pendente:'⏳'};
+return `<div class="timeline-item">
+<div class="dot"></div>
+<div class="time">${time}</div>
+<div class="content">
+<div class="task-name">${statusMap[t.status] || ''} ${t.task || '—'}</div>
+<div class="task-detail">${t.project} · ${t.agente || ''} ${t.observacao ? '· ' + t.observacao : ''}</div>
+</div>
+</div>`;
+}).join('');
+}
+
+function renderChart(history) {
+if (!history || history.length === 0) {
+document.getElementById('chartContainer').innerHTML = '<div class="error-box">Sem dados de receita</div>';
+return;
+}
+const ctx = document.getElementById('revenueChart');
+ctx.style.display = 'block';
+document.getElementById('chartLoading').style.display = 'none';
+if (chartInstance) chartInstance.destroy();
+chartInstance = new Chart(ctx, {
+type: 'bar',
+data: {
+labels: history.map(h => h.month),
+datasets: [
+{
+label: 'Receita Bruta',
+data: history.map(h => h.revenue),
+backgroundColor: '#C9A84C88',
+borderColor: '#C9A84C',
+borderWidth: 1,
+borderRadius: 4,
+order: 2
+},
+{
+label: 'Lucro Líquido',
+data: history.map(h => h.profit),
+type: 'line',
+borderColor: '#4caf50',
+backgroundColor: '#4caf5022',
+borderWidth: 2,
+pointBackgroundColor: '#4caf50',
+pointBorderColor: '#0a1628',
+pointBorderWidth: 2,
+pointRadius: 4,
+fill: true,
+tension: .3,
+order: 1
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+labels: {color: '#e0e0e0', font:{size:11}, usePointStyle:true, padding:16}
+},
+tooltip: {
+callbacks: {
+label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+}
+}
+},
+scales: {
+x: {
+grid: {color: '#1a2d4a', drawBorder: false},
+ticks: {color: '#6b7a8f', font:{size:11}}
+},
+y: {
+grid: {color: '#1a2d4a', drawBorder: false},
+ticks: {
+color: '#6b7a8f',
+font:{size:11},
+callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k'
+}
+}
+}
+}
+});
+}
+
+async function loadDashboard() {
+const data = await fetchData();
+const summary = data.summary;
+const healthAlerts = (data.health && data.health.alerts) || (summary && summary.alerts) || [];
+const status = getOverallStatus(summary);
+renderStatusBadge(status);
+renderCards(summary);
+renderAlerts(healthAlerts);
+renderActions(summary);
+renderTimeline((summary && summary.tasks) || null);
+renderChart((summary && summary.revenue_history) || null);
+document.getElementById('updatedAt').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+}
+
+loadDashboard();
+setInterval(loadDashboard, 30000);
+</script>
+</body>
+</html>

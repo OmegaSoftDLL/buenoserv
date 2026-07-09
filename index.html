@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Engenharia de Subestações e Telecom</title>
+<meta name="description" content="BUENOSERV: engenharia especializada em comissionamento de subestações até 500 kV, proteção, controle, SCADA, telecom SDH/DWDM/MPLS, data centers e cybersecurity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1A237E;--gold:#C9A84C;--gold-light:#E8D48B;--white:#FFFFFF;--gray:#F0F2F5;--dark:#1a1a2e}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--white);color:var(--dark);overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,22,40,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.15)}
+nav .container{display:flex;justify-content:space-between;align-items:center;height:72px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{height:40px;width:auto}
+.logo span{font-size:1.2rem;font-weight:700;color:var(--white);letter-spacing:-.5px}
+.logo span .gold{color:var(--gold)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.85rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.cta-nav{background:var(--gold);color:var(--navy)!important;padding:10px 24px;border-radius:6px;font-weight:600!important}
+.cta-nav:hover{background:var(--gold-light);color:var(--navy)!important}
+.mobile-menu{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer}
+/* HERO */
+.hero{min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,#162447 50%,#1a1a3e 100%);display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(26,35,126,.15) 0%,transparent 70%);border-radius:50%}
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-badge{display:inline-block;background:rgba(201,168,76,.15);color:var(--gold);padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:24px;border:1px solid rgba(201,168,76,.3)}
+.hero h1{font-size:3.5rem;font-weight:800;color:var(--white);line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+.hero h1 span{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:36px;max-width:580px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.95rem;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
+.btn-secondary{background:transparent;color:var(--white);padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem;border:1.5px solid rgba(255,255,255,.2);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:48px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,.08)}
+.hero-stats .stat .num{font-size:1.8rem;font-weight:800;color:var(--white)}
+.hero-stats .stat .num .gold{color:var(--gold)}
+.hero-stats .stat .label{font-size:.8rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+/* SECTIONS */
+section{padding:100px 0}
+.section-label{display:inline-block;color:var(--gold);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.section-title{font-size:2.4rem;font-weight:800;color:var(--navy);margin-bottom:16px;letter-spacing:-.5px}
+.section-sub{font-size:1.05rem;color:#666;max-width:600px;line-height:1.6;margin-bottom:48px}
+/* SERVICES */
+.services{background:var(--gray)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.service-card{background:var(--white);border-radius:12px;padding:32px;transition:all .3s;border:1px solid #eee;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));opacity:0;transition:opacity .3s}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08);border-color:var(--gold)}
+.service-card:hover::before{opacity:1}
+.service-icon{width:48px;height:48px;background:rgba(201,168,76,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
+.service-card h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+.service-card p{font-size:.9rem;color:#666;line-height:1.6}
+.service-card .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.service-card .tags span{background:var(--gray);padding:3px 10px;border-radius:4px;font-size:.75rem;color:#555;font-weight:500}
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.about-text .highlight{font-size:1.15rem;color:var(--navy);font-weight:500;line-height:1.7;margin-bottom:16px}
+.about-text p{color:#666;line-height:1.7;margin-bottom:12px}
+.about-certs{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap}
+.about-certs .cert{background:var(--gray);border-radius:8px;padding:12px 20px;text-align:center;font-size:.8rem;font-weight:600;color:var(--navy);border:1px solid #e0e0e0}
+.about-image{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:16px;padding:48px;color:var(--white);min-height:400px;display:flex;flex-direction:column;justify-content:center}
+.about-image h3{font-size:1.5rem;font-weight:700;margin-bottom:12px;color:var(--gold)}
+.about-image ul{list-style:none}
+.about-image ul li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.9rem;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:10px}
+.about-image ul li::before{content:'▸';color:var(--gold);font-weight:700}
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.project-card{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #eee;transition:all .3s}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.project-card .body{padding:24px}
+.project-card .tag{display:inline-block;background:rgba(201,168,76,.1);color:var(--gold);padding:3px 10px;border-radius:4px;font-size:.75rem;font-weight:600;margin-bottom:8px}
+.project-card h3{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+.project-card .client{font-size:.85rem;color:#888;margin-bottom:8px}
+.project-card p{font-size:.85rem;color:#666;line-height:1.5}
+/* CONTACT */
+.contact{background:var(--navy);color:var(--white)}
+.contact .section-title{color:var(--white)}
+.contact .section-sub{color:rgba(255,255,255,.5)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-info h3{color:var(--gold);font-size:1.1rem;margin-bottom:8px;margin-top:24px}
+.contact-info h3:first-child{margin-top:0}
+.contact-info p{color:rgba(255,255,255,.6);line-height:1.6;font-size:.95rem}
+.contact-form{background:rgba(255,255,255,.05);border-radius:12px;padding:32px;border:1px solid rgba(255,255,255,.1)}
+.contact-form h3{color:var(--white);font-size:1.1rem;margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:var(--white);font-size:.9rem;font-family:'Inter',sans-serif;transition:border .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold)}
+.form-group textarea{height:100px;resize:vertical}
+.form-group select option{background:var(--navy);color:var(--white)}
+/* FOOTER */
+footer{background:#060e1a;padding:40px 0;border-top:1px solid rgba(255,255,255,.05)}
+footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer p{font-size:.85rem;color:rgba(255,255,255,.4)}
+footer .social{display:flex;gap:16px}
+footer .social a{color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;font-size:.85rem}
+footer .social a:hover{color:var(--gold)}
+/* RESPONSIVE */
+@media(max-width:768px){
+.hero h1{font-size:2.2rem}
+.hero-stats{gap:24px;flex-wrap:wrap}
+.hero-stats .stat .num{font-size:1.3rem}
+.nav-links{display:none;position:absolute;top:72px;left:0;right:0;background:var(--navy);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(201,168,76,.15)}
+.nav-links.active{display:flex}
+.mobile-menu{display:block}
+.about-grid,.contact-grid{grid-template-columns:1fr}
+section{padding:60px 0}
+.section-title{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<div class="logo"><span>BUENOSERV<span class="gold">.</span></span></div>
+<ul class="nav-links" id="navLinks">
+<li><a href="#servicos">Serviços</a></li>
+<li><a href="#sobre">Sobre</a></li>
+<li><a href="#projetos">Projetos</a></li>
+<li><a href="#contato" class="cta-nav">Solicitar Proposta</a></li>
+</ul>
+<button class="mobile-menu" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</button>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+<div class="hero-content">
+<div class="hero-badge">+20 anos em engenharia de alta tensão</div>
+<h1>Engenharia que<br><span>energiza o futuro</span></h1>
+<p>BUENOSERV é referência em comissionamento de subestações até 500 kV, sistemas de proteção, controle, SCADA, telecomunicações e cybersecurity para o setor elétrico brasileiro.</p>
+<div class="hero-actions">
+<a href="#contato" class="btn-primary">Solicitar Proposta →</a>
+<a href="#servicos" class="btn-secondary">Nossos Serviços</a>
+</div>
+<div class="hero-stats">
+<div class="stat"><div class="num"><span class="gold">20</span>+</div><div class="label">Anos de Experiência</div></div>
+<div class="stat"><div class="num"><span class="gold">500</span> kV</div><div class="label">Maior Tensão</div></div>
+<div class="stat"><div class="num"><span class="gold">81</span></div><div class="label">Especialidades</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="servicos">
+<div class="container">
+<div class="section-label">Nossas Competências</div>
+<h2 class="section-title">Soluções Completas em Engenharia</h2>
+<p class="section-sub">Da concepção ao comissionamento, entregamos excelência técnica em cada fase do projeto.</p>
+<div class="services-grid">
+<div class="service-card">
+<div class="service-icon">⚡</div>
+<h3>Subestações</h3>
+<p>Comissionamento de SEs até 500 kV, proteção, controle, automação e integração de sistemas.</p>
+<div class="tags"><span>IEC 61850</span><span>Proteção</span><span>Automação</span></div>
+</div>
+<div class="service-card">
+<div class="service-icon">📡</div>
+<h3>Telecomunicações</h3>
+<p>Redes SDH/DWDM/MPLS-TP, rádio digital, fibra óptica, OTN, GPON e teleproteção.</p>
+<div class="tags"><span>SDH</span><span>DWDM</span><span>MPLS-TP</span><span>GPON</span></div>
+</div>
+<div class="service-card">
+<div class="service-icon">🖥️</div>
+<h3>SCADA & Controle</h3>
+<p>Supervisão, controle e aquisição de dados (SCADA/EMS/RTU), IEDs e sistemas de tempo real.</p>
+<div class="tags"><span>SCADA</span><span>RTU</span><span>IED</span><span>PTP</span></div>
+</div>
+<div class="service-card">
+<div class="service-icon">🔒</div>
+<h3>Cybersecurity</h3>
+<p>Segurança de redes elétricas (IEC 62351), NERC CIP, segmentação, firewalls e DMZ.</p>
+<div class="tags"><span>IEC 62351</span><span>NERC CIP</span><span>Firewall</span></div>
+</div>
+<div class="service-card">
+<div class="service-icon">📊</div>
+<h3>Data Centers</h3>
+<p>Projeto e comissionamento de data centers, TIA-942, UPS, climatização de precisão, cabeamento.</p>
+<div class="tags"><span>TIA-942</span><span>UPS</span><span>DCIM</span></div>
+</div>
+<div class="service-card">
+<div class="service-icon">🔧</div>
+<h3>Comissionamento</h3>
+<p>FAT/SAT, testes de proteção, certificação de fibra óptica, handover e documentação as-built.</p>
+<div class="tags"><span>FAT</span><span>SAT</span><span>As-Built</span><span>OTDR</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="sobre" style="background:var(--white)">
+<div class="container">
+<div class="about-grid">
+<div class="about-text">
+<div class="section-label">Quem Somos</div>
+<h2 class="section-title">Excelência em<br>Engenharia Elétrica</h2>
+<p class="highlight">Fundada pelo Eng. Ricardo Bueno, a BUENOSERV reúne mais de 20 anos de experiência em comissionamento de subestações, proteção, controle e telecomunicações para o setor elétrico.</p>
+<p>Atuamos com os mais altos padrões de qualidade e segurança, atendendo concessionárias, integradoras e indústrias em todo o Brasil. Nossa expertise abrange desde subestações de 69 kV até 500 kV, passando por redes de telecomunicações ópticas, SCADA, data centers e cybersecurity.</p>
+<div class="about-certs">
+<div class="cert">NR-10</div>
+<div class="cert">NR-35</div>
+<div class="cert">ISO 9001</div>
+<div class="cert">IEC 61850</div>
+<div class="cert">LGPD</div>
+</div>
+</div>
+<div class="about-image">
+<h3>Diferenciais BUENOSERV</h3>
+<ul>
+<li>+20 anos de mercado em energia elétrica</li>
+<li>Comissionamento até 500 kV</li>
+<li>81 especialidades técnicas integradas</li>
+<li>Atuação nacional com equipe própria</li>
+<li>Metodologia PMBOK + ISO 9001</li>
+<li>Entrega com SAT e documentação as-built</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="projetos" style="background:var(--gray)">
+<div class="container">
+<div class="section-label">Cases</div>
+<h2 class="section-title">Projetos Recentes</h2>
+<p class="section-sub">Confira alguns dos projetos que realizamos para as principais empresas do setor.</p>
+<div class="projects-grid">
+<div class="project-card">
+<div class="body">
+<div class="tag">Consultoria</div>
+<h3>Padronização SE 145kV</h3>
+<div class="client">E4 ENERGIA</div>
+<p>Consultoria técnica para padronização de telecomunicações em subestações de distribuição até 145 kV.</p>
+</div>
+</div>
+<div class="project-card">
+<div class="body">
+<div class="tag">Rede Óptica</div>
+<h3>Anel DWDM 100G</h3>
+<div class="client">Concessionária</div>
+<p>Projeto e comissionamento de anel DWDM 100G com proteção MSP, para integração de subestações.</p>
+</div>
+</div>
+<div class="project-card">
+<div class="body">
+<div class="tag">SCADA</div>
+<h3>Integração SE</h3>
+<div class="client">Concessionária</div>
+<p>Integração SCADA de 3 subestações via IEC 61850, com painéis sinópticos e concentrador de dados.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="contato" class="contact">
+<div class="container">
+<div class="section-label">Entre em Contato</div>
+<h2 class="section-title">Solicite sua Proposta</h2>
+<p class="section-sub">Estamos prontos para transformar seu projeto em realidade. Solicite uma proposta sem compromisso.</p>
+<div class="contact-grid">
+<div class="contact-info">
+<h3>📍 Endereço</h3>
+<p>Rua Giacomo Fior, nº 427 — Leme - SP</p>
+<h3>📧 E-mail</h3>
+<p>ricardo.bueno@buenoservengenharia.com</p>
+<h3>📱 Telefone</h3>
+<p>(19) — consultar</p>
+<h3>💳 Dados Bancários</h3>
+<p>BTG Pactual (208) | Ag: 0050 | CC: 2321479-4<br>PIX: 60.490.193/0001-38 (CNPJ)</p>
+<h3>📋 Dados da Empresa</h3>
+<p>BUENOSERV SERVIÇOS DE ENGENHARIA LTDA<br>CNPJ: 60.490.193/0001-38<br>Regime: Simples Nacional</p>
+</div>
+<div class="contact-form">
+<h3>Formulário de Proposta</h3>
+<form onsubmit="event.preventDefault();alert('Obrigado! Entraremos em contato em até 24h.')">
+<div class="form-group"><label>Nome</label><input type="text" placeholder="Seu nome" required></div>
+<div class="form-group"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
+<div class="form-group"><label>E-mail</label><input type="email" placeholder="seu@email.com" required></div>
+<div class="form-group"><label>Telefone</label><input type="tel" placeholder="(19) 99999-9999"></div>
+<div class="form-group"><label>Tipo de Serviço</label>
+<select><option>Comissionamento de SE</option><option>Telecomunicações</option><option>SCADA / Automação</option><option>Data Center</option><option>Cybersecurity</option><option>Consultoria Técnica</option><option>Outro</option></select></div>
+<div class="form-group"><label>Mensagem</label><textarea placeholder="Descreva seu projeto..."></textarea></div>
+<button type="submit" class="btn-primary" style="width:100%;justify-content:center">Enviar Solicitação →</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<p>© 2026 BUENOSERV SERVIÇOS DE ENGENHARIA LTDA. Todos os direitos reservados.</p>
+<div class="social">
+<a href="#">LinkedIn</a>
+<a href="#">E-mail</a>
+</div>
+</div>
+</footer>
+</body>
+</html>
