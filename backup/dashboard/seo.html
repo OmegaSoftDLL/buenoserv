@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — SEO Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a1628;color:#e0e0e0;padding:24px;min-height:100vh}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.header .logo{font-size:1.5rem;font-weight:700;letter-spacing:-.5px}
+.header .logo .gold{color:#C9A84C}
+.header .updated{font-size:.75rem;color:#6b7a8f}
+.score-ring{width:180px;height:180px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;position:relative}
+.score-ring svg{transform:rotate(-90deg);width:180px;height:180px}
+.score-ring .score-text{position:absolute;text-align:center}
+.score-ring .score-text .num{font-size:3rem;font-weight:800;color:#fff}
+.score-ring .score-text .label{font-size:.75rem;color:#6b7a8f;text-transform:uppercase;letter-spacing:1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:28px}
+.card{background:#0f1d35;border-radius:12px;padding:20px;border:1px solid #1a2d4a;transition:border .2s}
+.card:hover{border-color:#C9A84C44}
+.card .label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:#6b7a8f;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.card .value{font-size:1.6rem;font-weight:700;color:#e0e0e0}
+.card .value.gold{color:#C9A84C}
+.card .value.green{color:#4caf50}
+.card .value.red{color:#f44336}
+.card .value.yellow{color:#ffc107}
+.card .sub{font-size:.8rem;color:#6b7a8f;margin-top:4px}
+.card .sub.ok{color:#4caf50}
+.card .sub.fail{color:#f44336}
+.section{margin-bottom:28px}
+.section-title{font-size:1rem;font-weight:600;color:#C9A84C;margin-bottom:16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1a2d4a;padding-bottom:8px}
+.seo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.seo-item{background:#0f1d35;border-radius:10px;padding:16px;border:1px solid #1a2d4a;display:flex;align-items:center;justify-content:space-between}
+.seo-item .info h4{font-size:.9rem;font-weight:600;color:#e0e0e0;margin-bottom:2px}
+.seo-item .info p{font-size:.78rem;color:#6b7a8f}
+.seo-item .status{font-size:1.3rem}
+.seo-item .status.ok{color:#4caf50}
+.seo-item .status.fail{color:#f44336}
+.seo-item .status.warn{color:#ffc107}
+table{width:100%;border-collapse:collapse;background:#0f1d35;border-radius:12px;overflow:hidden;border:1px solid #1a2d4a}
+th,td{padding:12px 16px;text-align:left;font-size:.82rem;border-bottom:1px solid #1a2d4a}
+th{background:#0d1a2e;color:#C9A84C;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px}
+tr:hover{background:#122244}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
+.badge.ok{background:#1a3a1a;color:#4caf50;border:1px solid #4caf5066}
+.badge.fail{background:#3a1010;color:#f44336;border:1px solid #f4433666}
+.badge.warn{background:#3a3010;color:#ffc107;border:1px solid #ffc10766}
+.recommendations{list-style:none;display:grid;gap:8px}
+.recommendations li{background:#0f1d35;border-radius:8px;padding:12px 16px;border:1px solid #1a2d4a;display:flex;align-items:flex-start;gap:12px;font-size:.85rem;color:#e0e0e0}
+.recommendations li .icon{color:#ffc107;font-weight:700}
+.recommendations li .icon.ok{color:#4caf50}
+.chart-container{background:#0f1d35;border-radius:12px;padding:16px;border:1px solid #1a2d4a;height:260px;position:relative}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo">BUENOSERV<span class="gold">.</span> <span style="font-weight:400;font-size:.9rem;color:#6b7a8f;margin-left:8px">SEO Dashboard</span></div>
+<div class="updated" id="lastUpdate">Atualizado: --</div>
+</div>
+
+<div class="score-ring" id="scoreRing">
+<svg viewBox="0 0 180 180">
+<circle cx="90" cy="90" r="82" fill="none" stroke="#1a2d4a" stroke-width="10"/>
+<circle cx="90" cy="90" r="82" fill="none" stroke="#C9A84C" stroke-width="10" stroke-linecap="round" stroke-dasharray="515.2" stroke-dashoffset="515.2" id="scoreArc"/>
+</svg>
+<div class="score-text">
+<div class="num" id="scoreNum">--</div>
+<div class="label">SEO Score</div>
+</div>
+</div>
+
+<div class="grid" id="kpiGrid">
+<div class="card"><div class="label">Paginas Indexadas</div><div class="value gold" id="pagesIdx">--</div><div class="sub">no sitemap.xml</div></div>
+<div class="card"><div class="label">Meta Tags</div><div class="value green" id="metaTagsOk">--</div><div class="sub ok" id="metaTagsSub">OK</div></div>
+<div class="card"><div class="label">Open Graph</div><div class="value green" id="ogStatus">--</div><div class="sub ok" id="ogSub">Configurado</div></div>
+<div class="card"><div class="label">Schema.org</div><div class="value green" id="schemaStatus">--</div><div class="sub ok" id="schemaSub">EngineeringOrganization</div></div>
+<div class="card"><div class="label">Sitemap</div><div class="value green" id="sitemapStatus">--</div><div class="sub ok" id="sitemapSub">OK</div></div>
+<div class="card"><div class="label">Analytics</div><div class="value yellow" id="analyticsStatus">--</div><div class="sub fail" id="analyticsSub">Substituir G-XXXXXXXXXX</div></div>
+</div>
+
+<div class="section">
+<div class="section-title">Status Detalhado</div>
+<div class="seo-grid" id="seoGrid"></div>
+</div>
+
+<div class="section">
+<div class="section-title">Metricas</div>
+<div class="charts-row">
+<div class="chart-container">
+<canvas id="seoChart"></canvas>
+</div>
+<div class="chart-container">
+<canvas id="keywordsChart"></canvas>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">Recomendacoes</div>
+<ul class="recommendations" id="recList"></ul>
+</div>
+
+<script>
+const SEO_DATA = {
+  score: 65,
+  items: [
+    { name: "robots.txt", status: "ok", detail: "Presente e configurado" },
+    { name: "sitemap.xml", status: "ok", detail: "8 URLs indexadas" },
+    { name: "Meta description", status: "ok", detail: "Presente no <head>" },
+    { name: "Viewport tag", status: "ok", detail: "Responsivo configurado" },
+    { name: "Open Graph tags", status: "ok", detail: "6 tags implementadas" },
+    { name: "Twitter Card", status: "ok", detail: "summary_large_image" },
+    { name: "Schema.org JSON-LD", status: "ok", detail: "EngineeringOrganization" },
+    { name: "Google Analytics", status: "warn", detail: "ID generico G-XXXXXXXXXX" },
+    { name: "Google Search Console", status: "fail", detail: "Tag de verificacao ausente" },
+    { name: "Canonical URL", status: "fail", detail: "Link canonical ausente" },
+    { name: "H1 tag", status: "ok", detail: "Presente no hero" },
+    { name: "Alt text em imagens", status: "fail", detail: "Imagens sem alt text" },
+    { name: "SSL/HTTPS", status: "ok", detail: "HTTPS configurado" },
+    { name: "Mobile friendly", status: "ok", detail: "Design responsivo" },
+    { name: "Page speed", status: "fail", detail: "Otimizacao pendente" },
+    { name: "Favicon", status: "ok", detail: "Presente" },
+    { name: "Pagina 404", status: "fail", detail: "404.html nao encontrada" }
+  ],
+  pages: 8,
+  recommendations: [
+    "Adicionar <link rel='canonical' href='...'> no <head> de todas as paginas",
+    "Comprimir imagens e adicionar alt text descritivo",
+    "Implementar lazy loading para imagens e iframes",
+    "Criar pagina 404.html personalizada",
+    "Substituir G-XXXXXXXXXX pelo ID real do Google Analytics",
+    "Adicionar meta tag de verificacao do Google Search Console",
+    "Vincular perfil do Google Meu Negocio ao site",
+    "Habilitar cache, compressao Gzip e CDN",
+    "Criar seção de blog para gerar conteudo fresco",
+    "Buscar backlinks em sites do setor eletrico"
+  ]
+};
+
+function updateScore(score) {
+  const circumference = 2 * Math.PI * 82;
+  const offset = circumference - (score / 100) * circumference;
+  document.getElementById('scoreArc').style.strokeDashoffset = offset;
+  document.getElementById('scoreNum').textContent = score;
+  const ring = document.getElementById('scoreRing');
+  if (score >= 80) ring.style.filter = 'drop-shadow(0 0 20px rgba(76,175,80,.3))';
+  else if (score >= 50) ring.style.filter = 'drop-shadow(0 0 20px rgba(255,193,7,.3))';
+  else ring.style.filter = 'drop-shadow(0 0 20px rgba(244,67,54,.3))';
+}
+
+function renderItems() {
+  const grid = document.getElementById('seoGrid');
+  grid.innerHTML = SEO_DATA.items.map(item => {
+    const icons = { ok: '\u2705', warn: '\u26A0\uFE0F', fail: '\u274C' };
+    return `<div class="seo-item">
+      <div class="info"><h4>${item.name}</h4><p>${item.detail}</p></div>
+      <div class="status ${item.status}">${icons[item.status]}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateKPIs() {
+  const ok = SEO_DATA.items.filter(i => i.status === 'ok').length;
+  const warn = SEO_DATA.items.filter(i => i.status === 'warn').length;
+  const fail = SEO_DATA.items.filter(i => i.status === 'fail').length;
+
+  document.getElementById('pagesIdx').textContent = SEO_DATA.pages;
+  document.getElementById('metaTagsOk').textContent = ok + '/' + SEO_DATA.items.length;
+
+  const og = SEO_DATA.items.find(i => i.name === 'Open Graph tags');
+  document.getElementById('ogStatus').textContent = og.status === 'ok' ? 'OK' : 'FALTA';
+  document.getElementById('ogSub').textContent = og.detail;
+  document.getElementById('ogSub').className = 'sub ' + (og.status === 'ok' ? 'ok' : 'fail');
+
+  const schema = SEO_DATA.items.find(i => i.name === 'Schema.org JSON-LD');
+  document.getElementById('schemaStatus').textContent = schema.status === 'ok' ? 'OK' : 'FALTA';
+  document.getElementById('schemaSub').textContent = schema.detail;
+  document.getElementById('schemaSub').className = 'sub ' + (schema.status === 'ok' ? 'ok' : 'fail');
+
+  const sm = SEO_DATA.items.find(i => i.name === 'sitemap.xml');
+  document.getElementById('sitemapStatus').textContent = sm.status === 'ok' ? 'OK' : 'FALTA';
+  document.getElementById('sitemapSub').textContent = sm.detail;
+  document.getElementById('sitemapSub').className = 'sub ' + (sm.status === 'ok' ? 'ok' : 'fail');
+
+  const ga = SEO_DATA.items.find(i => i.name === 'Google Analytics');
+  document.getElementById('analyticsStatus').textContent = ga.status === 'ok' ? 'OK' : ga.status === 'warn' ? 'ATENCAO' : 'FALTA';
+  document.getElementById('analyticsSub').textContent = ga.detail;
+  document.getElementById('analyticsSub').className = 'sub ' + (ga.status === 'ok' ? 'ok' : 'fail');
+}
+
+function renderRecommendations() {
+  const list = document.getElementById('recList');
+  list.innerHTML = SEO_DATA.recommendations.map(r =>
+    `<li><span class="icon">\u2192</span> ${r}</li>`
+  ).join('');
+}
+
+function renderCharts() {
+  const ok = SEO_DATA.items.filter(i => i.status === 'ok').length;
+  const warn = SEO_DATA.items.filter(i => i.status === 'warn').length;
+  const fail = SEO_DATA.items.filter(i => i.status === 'fail').length;
+
+  new Chart(document.getElementById('seoChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['OK', 'Atencao', 'Pendente'],
+      datasets: [{
+        data: [ok, warn, fail],
+        backgroundColor: ['#4caf50', '#ffc107', '#f44336'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#6b7a8f', padding: 12 } }
+      }
+    }
+  });
+
+  const kwData = [
+    { label: 'robots.txt', val: 100 },
+    { label: 'Meta Tags', val: 100 },
+    { label: 'Open Graph', val: 100 },
+    { label: 'Schema.org', val: 100 },
+    { label: 'Sitemap', val: 100 },
+    { label: 'GA Tag', val: 50 },
+    { label: 'Canonical', val: 0 },
+    { label: 'Page Speed', val: 0 }
+  ];
+
+  new Chart(document.getElementById('keywordsChart'), {
+    type: 'bar',
+    data: {
+      labels: kwData.map(d => d.label),
+      datasets: [{
+        label: 'Implementacao (%)',
+        data: kwData.map(d => d.val),
+        backgroundColor: kwData.map(d => d.val === 100 ? '#4caf5066' : d.val >= 50 ? '#ffc10766' : '#f4433666'),
+        borderColor: kwData.map(d => d.val === 100 ? '#4caf50' : d.val >= 50 ? '#ffc107' : '#f44336'),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: { max: 100, grid: { color: '#1a2d4a' }, ticks: { color: '#6b7a8f' } },
+        y: { grid: { display: false }, ticks: { color: '#6b7a8f', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+document.getElementById('lastUpdate').textContent = 'Atualizado: ' + new Date().toLocaleString('pt-BR');
+updateScore(SEO_DATA.score);
+renderItems();
+updateKPIs();
+renderRecommendations();
+renderCharts();
+</script>
+</body>
+</html>

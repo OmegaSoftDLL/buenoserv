@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-07-08T23:08:20.607270",
+  "resumo": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "warned": 0
+  },
+  "checks": [
+    {
+      "nome": "AGENTES — 81 agentes .md com frontmatter YAML válido",
+      "status": "PASS",
+      "detalhe": "81 agentes válidos",
+      "sugestao": ""
+    },
+    {
+      "nome": "SCRIPTS — 42+ scripts em /tmp/opencode/templates/",
+      "status": "PASS",
+      "detalhe": "55 scripts OK (Python syntax + permissões)",
+      "sugestao": ""
+    },
+    {
+      "nome": "STATE — agent_state.json JSON válido com chaves obrigatórias",
+      "status": "PASS",
+      "detalhe": "agent_count=81, scripts_disponiveis=49, tasks=15",
+      "sugestao": ""
+    },
+    {
+      "nome": "DASHBOARD — serve_dashboard.py, executive.html, porta 8080",
+      "status": "PASS",
+      "detalhe": "serve_dashboard.py OK, executive.html OK, porta 8080 em LISTEN",
+      "sugestao": ""
+    },
+    {
+      "nome": "CRON — Jobs registrados no crontab",
+      "status": "PASS",
+      "detalhe": "13 jobs no crontab, 4 críticos OK",
+      "sugestao": ""
+    },
+    {
+      "nome": "SITE — index.html existe",
+      "status": "PASS",
+      "detalhe": "index.html encontrado (17939 bytes)",
+      "sugestao": ""
+    },
+    {
+      "nome": "MERCADO — market_intel/ com arquivos esperados",
+      "status": "PASS",
+      "detalhe": "3 arquivos: oportunidades.json (4790b); relatorio.md (3610b); tendencias.json (1697b)",
+      "sugestao": ""
+    },
+    {
+      "nome": "DEPENDÊNCIAS — openpyxl e python3",
+      "status": "PASS",
+      "detalhe": "python3 (Python 3.12.3), openpyxl (3.1.5), pyyaml (6.0.1)",
+      "sugestao": ""
+    }
+  ]
+}

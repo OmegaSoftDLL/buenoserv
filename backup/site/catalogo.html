@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Catálogo de Serviços</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:#e0e0e0;background:#0a1628;line-height:1.6}
+.header{background:linear-gradient(135deg,#0a1628 0%,#1a2744 100%);padding:60px 20px 40px;text-align:center;border-bottom:3px solid #d4a843}
+.header h1{color:#d4a843;font-size:2.6em;letter-spacing:2px;margin-bottom:8px}
+.header p{color:#8899bb;font-size:1.15em}
+.container{max-width:1200px;margin:0 auto;padding:40px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:30px}
+.card{background:linear-gradient(145deg,#111d35,#0e1830);border-radius:14px;padding:30px;border:1px solid #1e3050;transition:transform .3s,box-shadow .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(212,168,67,.15);border-color:#d4a843}
+.card-icon{font-size:2.4em;margin-bottom:12px}
+.card h3{color:#d4a843;font-size:1.2em;margin-bottom:8px}
+.card .desc{color:#b0c0dd;font-size:.95em;margin-bottom:12px}
+.card .benefits{background:rgba(212,168,67,.08);border-radius:8px;padding:12px 16px;margin-bottom:12px}
+.card .benefits strong{color:#d4a843;display:block;margin-bottom:4px;font-size:.9em}
+.card .benefits ul{list-style:none;padding:0}
+.card .benefits ul li{color:#9aabca;font-size:.85em;padding:2px 0 2px 16px;position:relative}
+.card .benefits ul li::before{content:"▸";position:absolute;left:0;color:#d4a843}
+.card .deliverables{font-size:.85em;color:#7a8baa}
+.card .deliverables strong{color:#d4a843}
+.section-title{font-size:1.8em;color:#d4a843;text-align:center;margin-bottom:40px}
+@media print{body{background:#fff;color:#333}.header{background:#fff;border-color:#d4a843;padding:30px 20px}.header h1{color:#d4a843}.header p{color:#555}.card{background:#fff;border:1px solid #ccc;break-inside:avoid}.card h3{color:#8a7030}.container{padding:20px}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.header h1{font-size:1.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>BUENOSERV</h1>
+<p>Catálogo de Serviços • Engenharia de Alta Tensão & Telecomunicações</p>
+</div>
+<div class="container">
+<h2 class="section-title">Nossos Serviços</h2>
+<div class="grid">
+
+<div class="card">
+<div class="card-icon">⚡</div>
+<h3>Comissionamento de SE (69kV a 500kV)</h3>
+<div class="desc">
+Comissionamento completo de subestações de alta e extra-alta tensão, incluindo ensaios funcionais, testes de integração e start-up.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Garantia de operação segura e dentro das normas</li>
+<li>Redução de falhas em energização</li>
+<li>Relatórios técnicos completos</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Protocolos de ensaio, relatório de comissionamento, as-built.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">📡</div>
+<h3>Telecomunicações (SDH, DWDM, MPLS-TP, GPON, Rádio)</h3>
+<div class="desc">
+Projeto e implantação de redes de telecomunicações para utilities, desde SDH/PDH até DWDM e MPLS-TP com proteção.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Comunicação crítica com alta disponibilidade</li>
+<li>Redes com proteção MSP & SNCP</li>
+<li>Suporte a missão crítica do sistema elétrico</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Projeto executivo, configuração de equipamentos, testes de aceitação.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">🛡️</div>
+<h3>Proteção e Controle (IEC 61850, Relés, Lógicas)</h3>
+<div class="desc">
+Engenharia de proteção elétrica: ajustes de relés, lógicas de proteção, integração IEC 61850 (GOOSE, MMS, SV).
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Seletividade e coordenação otimizadas</li>
+<li>Tempos de falta reduzidos</li>
+<li>Arquitetura interoperável</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Estudo de proteção, arquivos CID/SCD, relatório de seletividade.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">📊</div>
+<h3>SCADA / EMS / RTU</h3>
+<div class="desc">
+Integração de sistemas SCADA, EMS e RTUs para monitoração e controle remoto de subestações e centros de operação.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Visibilidade total da rede elétrica</li>
+<li>Operação remota segura</li>
+<li>Histórico de eventos e alarmes</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Arquitetura SCADA, telas de supervisão, mapeamento de pontos.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">🏢</div>
+<h3>Data Centers (TIA-942)</h3>
+<div class="desc">
+Projeto e consultoria para data centers baseados na norma TIA-942, incluindo infraestrutura elétrica, climatização e segurança.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Disponibilidade Tier III / IV</li>
+<li>Eficiência energética (PUE otimizado)</li>
+<li>Resiliência operacional</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Projeto conceitual, especificação de infra, plano de certificação.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">🔐</div>
+<h3>Cybersecurity (IEC 62351)</h3>
+<div class="desc">
+Implementação de segurança cibernética para sistemas de potência conforme IEC 62351, incluindo autenticação, criptografia e monitoração.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Conformidade com regulação do setor</li>
+<li>Proteção contra ataques à rede elétrica</li>
+<li>Auditoria e rastreabilidade</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Política de segurança, hardening, testes de penetração.
+</div>
+</div>
+
+<div class="card">
+<div class="card-icon">🔌</div>
+<h3>Fibra Óptica (Projeto, Emenda, OTDR)</h3>
+<div class="desc">
+Projeto, instalação, emenda e certificação de redes de fibra óptica com medição OTDR e ensaios de atenuação.
+</div>
+<div class="benefits">
+<strong>Benefícios</strong>
+<ul>
+<li>Alta capacidade e baixa latência</li>
+<li>Imunidade a interferência eletromagnética</li>
+<li>Certificação de enlace</li>
+</ul>
+</div>
+<div class="deliverables">
+<strong>Entregáveis:</strong> Projeto óptico, relatório OTDR, certificação de perdas.
+</div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

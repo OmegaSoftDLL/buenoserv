@@ -200,6 +200,17 @@ def run_bot():
     print("🤖 Bot Telegram BUENOSERV rodando... Ctrl+C para parar")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
+def run_health_server():
+    """Run a simple health endpoint instead of bot when no token configured."""
+    from flask import Flask, jsonify
+    app_h = Flask(__name__)
+    @app_h.route("/")
+    def health():
+        return jsonify({"servico": "BUENOSERV Telegram", "status": "sem_token",
+                        "msg": "Configure com: gen_bot_telegram.py --config <token> <chat_id>"})
+    print("🤖 Telegram sem token - rodando health server na porta 8096")
+    app_h.run(host="0.0.0.0", port=8096)
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--config":
         if len(sys.argv) < 4:
@@ -224,5 +235,8 @@ if __name__ == "__main__":
         sys.exit(0)
 
     else:
-        # Iniciar bot em modo polling
-        run_bot()
+        config = carregar_token()
+        if not config.get("bot_token"):
+            run_health_server()
+        else:
+            run_bot()

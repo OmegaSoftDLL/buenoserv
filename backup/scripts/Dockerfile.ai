@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir \
+    torch --index-url https://download.pytorch.org/whl/cu128 \
+    && pip install --no-cache-dir \
+    transformers \
+    sentence-transformers \
+    flask
+
+WORKDIR /tmp/opencode/templates
+COPY gen_ai_model_service.py .
+
+CMD ["python3", "gen_ai_model_service.py"]

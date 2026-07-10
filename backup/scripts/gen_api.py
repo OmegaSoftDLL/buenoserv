@@ -1,3 +1,4 @@
+[sudo: authenticate] Password: 
 #!/usr/bin/env python3
 """gen_api.py — API REST central do ecossistema BUENOSERV."""
 import http.server
@@ -236,6 +237,22 @@ class APIHandler(http.server.BaseHTTPRequestHandler):
             state = self._load_state_or_error()
             if state:
                 self._send_json(summary(state))
+        elif path == "" or path == "/":
+            state = self._load_state_or_error()
+            info = {
+                "servico": "BUENOSERV API Central",
+                "versao": "2.0",
+                "endpoints": [
+                    "/api/state", "/api/pipeline", "/api/dre", "/api/agents",
+                    "/api/scripts", "/api/projects", "/api/cron", "/api/health",
+                    "/api/market", "/api/summary"
+                ]
+            }
+            if state:
+                info["agentes"] = state.get("agent_count", 0)
+                info["projetos"] = len(state.get("projects", []))
+                info["scripts"] = len(state.get("scripts_disponiveis", []))
+            self._send_json(info)
         else:
             self._error("Endpoint nao encontrado: " + self.path, 404)
 

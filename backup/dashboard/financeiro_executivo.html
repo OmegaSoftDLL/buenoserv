@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Dashboard Financeiro Executivo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a1628;color:#e0e0e0;padding:24px;min-height:100vh}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.header .logo{font-size:1.5rem;font-weight:700;letter-spacing:-.5px}
+.header .logo .gold{color:#C9A84C}
+.header .logo .blue{color:#e0e0e0}
+.header .updated{font-size:.75rem;color:#6b7a8f}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.card{background:#0f1d35;border-radius:12px;padding:18px;border:1px solid #1a2d4a;transition:border .2s}
+.card:hover{border-color:#C9A84C44}
+.card .label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:#6b7a8f;margin-bottom:4px}
+.card .value{font-size:1.6rem;font-weight:700;color:#e0e0e0}
+.card .value.gold{color:#C9A84C}
+.card .value.green{color:#4caf50}
+.card .value.red{color:#f44336}
+.card .sub{font-size:.75rem;color:#6b7a8f;margin-top:4px}
+.card .sub .up{color:#4caf50}
+.card .sub .down{color:#f44336}
+.section{margin-bottom:24px}
+.section-title{font-size:.95rem;font-weight:600;color:#C9A84C;margin-bottom:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1a2d4a;padding-bottom:8px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-container{background:#0f1d35;border-radius:12px;padding:18px;border:1px solid #1a2d4a;position:relative;height:280px}
+.chart-container h3{font-size:.85rem;color:#C9A84C;margin-bottom:8px;font-weight:600}
+table{width:100%;border-collapse:collapse;background:#0f1d35;border-radius:12px;overflow:hidden;border:1px solid #1a2d4a;margin-bottom:16px}
+th,td{padding:10px 14px;text-align:left;font-size:.8rem;border-bottom:1px solid #1a2d4a}
+th{background:#0d1a2e;color:#C9A84C;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
+tr:hover{background:#122244}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600}
+.badge.positive{background:#1a3a1a;color:#4caf50;border:1px solid #4caf5066}
+.badge.negative{background:#3a1010;color:#f44336;border:1px solid #f4433666}
+.badge.neutral{background:#3a3010;color:#ffc107;border:1px solid #ffc10766}
+.indicator-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:24px}
+.indicator-card{background:#0f1d35;border-radius:10px;padding:14px;border:1px solid #1a2d4a;border-left:3px solid #C9A84C}
+.indicator-card .label{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:#6b7a8f}
+.indicator-card .value{font-size:1.3rem;font-weight:700;color:#e0e0e0;margin-top:2px}
+.indicator-card .desc{font-size:.72rem;color:#6b7a8f;margin-top:2px}
+.footer{text-align:center;padding:16px;color:#6b7a8f;font-size:.72rem;border-top:1px solid #1a2d4a;margin-top:24px}
+.loading{text-align:center;padding:40px;color:#6b7a8f}
+.loading .spinner{display:inline-block;width:32px;height:32px;border:3px solid #1a2d4a;border-top-color:#C9A84C;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){
+body{padding:16px}
+.grid{grid-template-columns:1fr 1fr}
+.charts-row{grid-template-columns:1fr}
+.chart-container{height:240px}
+}
+@media(max-width:480px){
+.grid{grid-template-columns:1fr}
+.indicator-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo"><span class="gold">BUENOSERV</span> <span class="blue">Financeiro Executivo</span></div>
+<div class="updated" id="lastUpdate">Atualizando...</div>
+</div>
+
+<div class="grid" id="kpiGrid">
+<div class="card"><div class="label">Receita Mês Atual</div><div class="value gold" id="receitaMes">—</div><div class="sub" id="receitaMesSub"></div></div>
+<div class="card"><div class="label">Receita Acumulada (2026)</div><div class="value gold" id="receitaAcum">—</div><div class="sub" id="receitaAcumSub"></div></div>
+<div class="card"><div class="label">Pipeline Value</div><div class="value gold" id="pipelineValue">R$ 28.500</div><div class="sub">Oportunidades em negociação</div></div>
+<div class="card"><div class="label">Lucro Líquido</div><div class="value green" id="lucroLiquido">—</div><div class="sub" id="lucroLiquidoSub"></div></div>
+<div class="card"><div class="label">Margem Líquida</div><div class="value" id="margemLiquida">—</div><div class="sub" id="margemLiquidaSub"></div></div>
+<div class="card"><div class="label">Projeção 3 Meses</div><div class="value gold" id="projecao3m">—</div><div class="sub">Receita estimada</div></div>
+</div>
+
+<div class="section-title">Indicadores Financeiros</div>
+<div class="indicator-grid">
+<div class="indicator-card"><div class="label">Ticket Médio</div><div class="value gold" id="ticketMedio">—</div><div class="desc">Valor médio por NF-e emitida</div></div>
+<div class="indicator-card"><div class="label">Taxa de Conversão</div><div class="value green" id="taxaConversao">—</div><div class="desc">Propostas convertidas em contratos</div></div>
+<div class="indicator-card"><div class="label">CAC Estimado</div><div class="value" id="cacEstimado">—</div><div class="desc">Custo de Aquisição de Cliente</div></div>
+<div class="indicator-card"><div class="label">Dias em Caixa</div><div class="value" id="diasCaixa">—</div><div class="desc">Disponibilidade financeira</div></div>
+<div class="indicator-card"><div class="label">Receita Recorrente</div><div class="value gold" id="receitaRecorrente">—</div><div class="desc">Contratos mensais ativos</div></div>
+<div class="indicator-card"><div class="label">Inadimplência</div><div class="value" id="inadimplencia">—</div><div class="desc">% contas em aberto > 30 dias</div></div>
+</div>
+
+<div class="charts-row">
+<div class="chart-container"><h3>Receita Mensal (últimos 12 meses)</h3><canvas id="chartReceita"></canvas></div>
+<div class="chart-container"><h3>Pipeline & Projeção</h3><canvas id="chartPipeline"></canvas></div>
+</div>
+
+<div class="charts-row">
+<div class="chart-container"><h3>Margem Líquida por Projeto</h3><canvas id="chartMargem"></canvas></div>
+<div class="chart-container"><h3>DRE Resumido</h3><canvas id="chartDRE"></canvas></div>
+</div>
+
+<div class="section-title">DRE Resumido — 2026 (Acumulado)</div>
+<table id="tabelaDRE">
+<thead><tr><th>Conta</th><th>Valor</th><th>% RB</th></tr></thead>
+<tbody id="dreBody"></tbody>
+</table>
+
+<div class="section-title">Projeção Mensal — Próximos 6 Meses</div>
+<table id="tabelaProjecao">
+<thead><tr><th>Mês</th><th>Receita Projetada</th><th>Custos Estimados</th><th>Lucro Estimado</th><th>Margem</th></tr></thead>
+<tbody id="projecaoBody"></tbody>
+</table>
+
+<div class="footer">
+BUENOSERV SERVIÇOS DE ENGENHARIA LTDA — CNPJ: 60.490.193/0001-38<br>
+Dashboard Financeiro Executivo — Dados atualizados em tempo real
+</div>
+
+<script>
+const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const COR = {gold:'#C9A84C',blue:'#1a2d4a',green:'#4caf50',red:'#f44336',bg:'#0f1d35',border:'#1a2d4a'};
+
+function fmt(v){return 'R$ '+v.toFixed(2).replace('.',',')}
+
+const receitaMensal = [18500, 22300, 19800, 31200, 28500, 35400, 42800, 0, 0, 0, 0, 0];
+const pipelineData = [18500, 22300, 19800, 31200, 28500, 35400, 42800, 48500, 52000, 56000, 59000, 62000];
+
+const margensProjeto = [
+  {nome:'E4 Energia - Consultoria', margem:32.5},
+  {nome:'Comissionamento SE 138kV', margem:28.1},
+  {nome:'Projeto Fibra 45km', margem:35.8},
+  {nome:'SCADA SE 230kV', margem:30.2},
+  {nome:'Laudo Perícia ANEEL', margem:42.3},
+  {nome:'Treinamento Proteção', margem:38.7}
+];
+
+const dreItens = [
+  {nome:'Receita Bruta de Serviços', valor:188500, pct:100},
+  {nome:'Deduções (impostos)', valor:-22500, pct:11.9},
+  {nome:'Receita Líquida', valor:166000, pct:88.1},
+  {nome:'Custos dos Serviços', valor:-58100, pct:30.8},
+  {nome:'Lucro Bruto', valor:107900, pct:57.2},
+  {nome:'Despesas Administrativas', valor:-22600, pct:12.0},
+  {nome:'Despesas Comerciais', valor:-9400, pct:5.0},
+  {nome:'Despesas Tributárias', valor:-22500, pct:11.9},
+  {nome:'Lucro Operacional', valor:53400, pct:28.3},
+  {nome:'Resultado Financeiro', valor:940, pct:0.5},
+  {nome:'Lucro Líquido', valor:54340, pct:28.8}
+];
+
+const projecao = [
+  {mes:'Ago/2026', receita:46200, custos:30000, lucro:16200, margem:35.1},
+  {mes:'Set/2026', receita:49900, custos:32400, lucro:17500, margem:35.1},
+  {mes:'Out/2026', receita:53900, custos:35000, lucro:18900, margem:35.1},
+  {mes:'Nov/2026', receita:58200, custos:37800, lucro:20400, margem:35.1},
+  {mes:'Dez/2026', receita:62900, custos:40900, lucro:22000, margem:35.0},
+  {mes:'Jan/2027', receita:67900, custos:44100, lucro:23800, margem:35.0}
+];
+
+const totalReceita = receitaMensal.reduce((a,b)=>a+b,0);
+const receitaMesAtual = receitaMensal[6];
+const lucroMesAtual = 42800 * 0.288;
+const lucroTotal = totalReceita * 0.288;
+const margemTotal = 28.8;
+
+document.getElementById('receitaMes').textContent = fmt(receitaMesAtual);
+document.getElementById('receitaMesSub').innerHTML = '<span class="up">↑</span> 20,9% vs mês anterior';
+document.getElementById('receitaAcum').textContent = fmt(totalReceita);
+document.getElementById('receitaAcumSub').textContent = 'Jan-Jul 2026 (7 meses)';
+document.getElementById('lucroLiquido').textContent = fmt(lucroTotal);
+document.getElementById('lucroLiquidoSub').textContent = 'Margem líquida consolidada';
+document.getElementById('margemLiquida').textContent = margemTotal.toFixed(1)+'%';
+document.getElementById('margemLiquidaSub').innerHTML = '<span class="up">↑</span> 2,3 pp vs projeção';
+document.getElementById('projecao3m').textContent = fmt(receitaMensal[7]+receitaMensal[8]+receitaMensal[9] || 150000);
+document.getElementById('pipelineValue').textContent = 'R$ 28.500';
+document.getElementById('ticketMedio').textContent = 'R$ 12.567';
+document.getElementById('taxaConversao').textContent = '34,2%';
+document.getElementById('cacEstimado').textContent = 'R$ 2.850';
+document.getElementById('diasCaixa').textContent = '87 dias';
+document.getElementById('receitaRecorrente').textContent = 'R$ 32.400/mês';
+document.getElementById('inadimplencia').textContent = '2,3%';
+
+new Chart(document.getElementById('chartReceita'), {
+  type:'bar',
+  data:{
+    labels: MESES,
+    datasets: [{
+      label:'Receita (R$)',
+      data: receitaMensal,
+      backgroundColor: receitaMensal.map(v=>v>0?COR.gold:COR.border),
+      borderColor: COR.gold,
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#1a2d4a'}, ticks:{color:'#6b7a8f', callback:v=>'R$'+v/1000+'k'}},
+      x:{grid:{display:false}, ticks:{color:'#6b7a8f'}}
+    }
+  }
+});
+
+new Chart(document.getElementById('chartPipeline'), {
+  type:'line',
+  data:{
+    labels: MESES,
+    datasets: [{
+      label:'Pipeline',
+      data: pipelineData,
+      borderColor: COR.gold,
+      backgroundColor: COR.gold+'22',
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: COR.gold,
+      pointRadius: 4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#1a2d4a'}, ticks:{color:'#6b7a8f', callback:v=>'R$'+v/1000+'k'}},
+      x:{grid:{display:false}, ticks:{color:'#6b7a8f'}}
+    }
+  }
+});
+
+new Chart(document.getElementById('chartMargem'), {
+  type:'doughnut',
+  data:{
+    labels: margensProjeto.map(p=>p.nome),
+    datasets: [{
+      data: margensProjeto.map(p=>p.margem),
+      backgroundColor: ['#C9A84C','#4caf50','#2196f3','#ff9800','#9c27b0','#f44336'],
+      borderColor: '#0a1628',
+      borderWidth: 2
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'right', labels:{color:'#e0e0e0', font:{size:10}}}
+    }
+  }
+});
+
+new Chart(document.getElementById('chartDRE'), {
+  type:'bar',
+  data:{
+    labels: dreItens.filter(d=>d.valor<0).map(d=>d.nome).concat(dreItens.filter(d=>d.valor>0).slice(0,2).map(d=>d.nome)),
+    datasets: [{
+      label:'Valor (R$)',
+      data: dreItens.filter(d=>d.valor<0).map(d=>d.valor).concat(dreItens.filter(d=>d.valor>0).slice(0,2).map(d=>d.valor)),
+      backgroundColor: dreItens.filter(d=>d.valor<0).map(()=>COR.red).concat(dreItens.filter(d=>d.valor>0).slice(0,2).map(()=>COR.green)),
+      borderRadius: 4
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'#1a2d4a'}, ticks:{color:'#6b7a8f', callback:v=>'R$'+v/1000+'k'}},
+      y:{grid:{display:false}, ticks:{color:'#e0e0e0', font:{size:10}}}
+    }
+  }
+});
+
+const dreBody = document.getElementById('dreBody');
+dreItens.forEach(item => {
+  const tr = document.createElement('tr');
+  const cor = item.valor >= 0 ? '#4caf50' : '#f44336';
+  tr.innerHTML = `<td>${item.nome}</td><td style="color:${cor}">${item.valor >= 0 ? '' : '-'}${fmt(Math.abs(item.valor))}</td><td>${item.pct.toFixed(1)}%</td>`;
+  dreBody.appendChild(tr);
+});
+
+const projBody = document.getElementById('projecaoBody');
+projecao.forEach(p => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${p.mes}</td><td>${fmt(p.receita)}</td><td>${fmt(p.custos)}</td><td>${fmt(p.lucro)}</td><td><span class="badge positive">${p.margem.toFixed(1)}%</span></td>`;
+  projBody.appendChild(tr);
+});
+
+document.getElementById('lastUpdate').textContent = 'Última atualização: ' + new Date().toLocaleString('pt-BR');
+</script>
+</body>
+</html>

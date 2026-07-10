@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Portfólio de Projetos</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:#e0e0e0;background:#0a1628;line-height:1.6}
+.header{background:linear-gradient(135deg,#0a1628 0%,#1a2744 100%);padding:60px 20px 40px;text-align:center;border-bottom:3px solid #d4a843}
+.header h1{color:#d4a843;font-size:2.6em;letter-spacing:2px;margin-bottom:8px}
+.header p{color:#8899bb;font-size:1.15em}
+.container{max-width:1200px;margin:0 auto;padding:40px 20px}
+.section-title{font-size:1.8em;color:#d4a843;text-align:center;margin-bottom:40px}
+.case{border:1px solid #1e3050;border-radius:14px;margin-bottom:30px;overflow:hidden;background:linear-gradient(145deg,#111d35,#0e1830);transition:box-shadow .3s}
+.case:hover{box-shadow:0 8px 30px rgba(212,168,67,.12);border-color:#d4a843}
+.case-top{display:flex;flex-wrap:wrap}
+.case-visual{width:280px;min-height:220px;display:flex;align-items:center;justify-content:center;font-size:4em;flex-shrink:0}
+.case-info{padding:24px;flex:1;min-width:280px}
+.case-info h3{color:#d4a843;font-size:1.25em;margin-bottom:4px}
+.case-client{color:#8899bb;font-size:.9em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.case-client::before{content:"🏢"}
+.case-detail{padding:0 24px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.case-box{border-left:3px solid #d4a843;padding:0 0 0 14px}
+.case-box h4{color:#d4a843;font-size:.85em;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.case-box p{color:#b0c0dd;font-size:.92em}
+.case-techs{padding:0 24px 20px;display:flex;flex-wrap:wrap;gap:8px}
+.case-techs span{background:rgba(212,168,67,.1);color:#d4a843;border:1px solid rgba(212,168,67,.25);border-radius:20px;padding:4px 14px;font-size:.8em}
+.placeholder-icon{width:120px;height:120px;background:linear-gradient(135deg,#1a2744,#0f1b30);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3em;margin:20px auto}
+@media(max-width:700px){.case-visual{width:100%;min-height:160px}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>BUENOSERV</h1>
+<p>Portfólio de Projetos • Casos de Sucesso</p>
+</div>
+<div class="container">
+<h2 class="section-title">Projetos Realizados</h2>
+
+<div class="case">
+<div class="case-top">
+<div class="case-visual"><div class="placeholder-icon">⚡</div></div>
+<div class="case-info">
+<h3>Comissionamento SE 138kV</h3>
+<div class="case-client">Concessionária XYZ — Setor Elétrico</div>
+<p style="color:#b0c0dd;font-size:.95em">Comissionamento completo de subestação 138kV com 2 transformadores 50MVA, 6 bays de linha e sistema de proteção digital.</p>
+</div>
+</div>
+<div class="case-detail">
+<div class="case-box"><h4>Desafio</h4><p>Prazo reduzido de 45 dias para energização, interfaces com 3 fabricantes diferentes de IEDs.</p></div>
+<div class="case-box"><h4>Solução</h4><p>Metodologia ágil de comissionamento com plano de testes integrado e equipe dedicada 24/7.</p></div>
+<div class="case-box"><h4>Resultados</h4><p>Energização antecipada em 5 dias, zero não conformidades, aceite em primeira auditoria.</p></div>
+</div>
+<div class="case-techs">
+<span>IEC 61850</span><span>Relés SEL</span><span>Transformadores 50MVA</span><span>Bay Control</span>
+</div>
+</div>
+
+<div class="case">
+<div class="case-top">
+<div class="case-visual"><div class="placeholder-icon">🌐</div></div>
+<div class="case-info">
+<h3>Anel DWDM 100G com Proteção MSP</h3>
+<div class="case-client">Concessionária ABC — Telecom</div>
+<p style="color:#b0c0dd;font-size:.95em">Implantação de anel óptico DWDM 100G com proteção MSP 1+1 interligando 5 subestações e o centro de operação.</p>
+</div>
+</div>
+<div class="case-detail">
+<div class="case-box"><h4>Desafio</h4><p>Fibra óptica existente com atenuação elevada em 2 trechos, necessidade de amplificação óptica.</p></div>
+<div class="case-box"><h4>Solução</h4><p>Projeto óptico com EDFA e Raman, configuração MSP 1+1 com switch inferior a 50ms.</p></div>
+<div class="case-box"><h4>Resultados</h4><p>Disponibilidade 99.999%, throughput 100Gbps com proteção, latência < 1ms.</p></div>
+</div>
+<div class="case-techs">
+<span>DWDM 100G</span><span>MSP 1+1</span><span>EDFA</span><span>OTDR</span><span>GMPLS</span>
+</div>
+</div>
+
+<div class="case">
+<div class="case-top">
+<div class="case-visual"><div class="placeholder-icon">📟</div></div>
+<div class="case-info">
+<h3>Integração SCADA IEC 61850</h3>
+<div class="case-client">Grupo Energético Sul — 3 Subestações</div>
+<p style="color:#b0c0dd;font-size:.95em">Integração de 3 subestações ao centro de operação utilizando protocolo IEC 61850 e gateway SCADA.</p>
+</div>
+</div>
+<div class="case-detail">
+<div class="case-box"><h4>Desafio</h4><p>Subestações de fabricantes distintos (ABB, Siemens, GE), padronização do barramento de estação.</p></div>
+<div class="case-box"><h4>Solução</h4><p>Migração para barramento IEC 61850 com GOOSE para sinalização e MMS para aquisição de dados.</p></div>
+<div class="case-box"><h4>Resultados</h4><p>Operação unificada, redução de 70% no cabeamento, tempo de falta reduzido em 40%.</p></div>
+</div>
+<div class="case-techs">
+<span>IEC 61850</span><span>GOOSE</span><span>MMS</span><span>SCADA</span><span>Gateway</span>
+</div>
+</div>
+
+<div class="case">
+<div class="case-top">
+<div class="case-visual"><div class="placeholder-icon">🏭</div></div>
+<div class="case-info">
+<h3>Data Center TIER III</h3>
+<div class="case-client">Indústria Química Nacional — Data Center</div>
+<p style="color:#b0c0dd;font-size:.95em">Projeto e implantação de data center TIER III (TIA-942) para centro de controle industrial.</p>
+</div>
+</div>
+<div class="case-detail">
+<div class="case-box"><h4>Desafio</h4><p>Disponibilidade 99.982% exigida, espaço físico limitado a 80m², orçamento restrito.</p></div>
+<div class="case-box"><h4>Solução</h4><p>Arquitetura N+1 com UPS modulares, climatização in-row e gerador dedicado. Cabeamento estruturado categoria 6A.</p></div>
+<div class="case-box"><h4>Resultados</h4><p>Certificação TIER III (Design + Facility), PUE de 1.5, disponibilidade comprovada em 24 meses.</p></div>
+</div>
+<div class="case-techs">
+<span>TIA-942</span><span>TIER III</span><span>UPS Modular</span><span>N+1</span><span>C6A</span>
+</div>
+</div>
+
+</div>
+</body>
+</html>

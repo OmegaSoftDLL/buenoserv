@@ -251,33 +251,149 @@
   "dre": {
     "ano": 2026,
     "meses": {
+      "1": {
+        "ano": 2026,
+        "receita_bruta": 18500.0,
+        "deducoes": 925.0,
+        "receita_liquida": 17575.0,
+        "custos_servicos": 7400.0,
+        "lucro_bruto": 10175.0,
+        "despesas_administrativas": 2775.0,
+        "despesas_comerciais": 925.0,
+        "despesas_tributarias": 832.5,
+        "lucro_operacional": 5642.5,
+        "resultado_financeiro": 92.5,
+        "lucro_liquido": 5735.0
+      },
+      "2": {
+        "ano": 2026,
+        "receita_bruta": 22300.0,
+        "deducoes": 1115.0,
+        "receita_liquida": 21185.0,
+        "custos_servicos": 8920.0,
+        "lucro_bruto": 12265.0,
+        "despesas_administrativas": 3345.0,
+        "despesas_comerciais": 1115.0,
+        "despesas_tributarias": 1003.5,
+        "lucro_operacional": 6801.5,
+        "resultado_financeiro": 111.5,
+        "lucro_liquido": 6913.0
+      },
+      "3": {
+        "ano": 2026,
+        "receita_bruta": 19800.0,
+        "deducoes": 990.0,
+        "receita_liquida": 18810.0,
+        "custos_servicos": 7920.0,
+        "lucro_bruto": 10890.0,
+        "despesas_administrativas": 2970.0,
+        "despesas_comerciais": 990.0,
+        "despesas_tributarias": 891.0,
+        "lucro_operacional": 6039.0,
+        "resultado_financeiro": 99.0,
+        "lucro_liquido": 6138.0
+      },
+      "4": {
+        "ano": 2026,
+        "receita_bruta": 31200.0,
+        "deducoes": 1560.0,
+        "receita_liquida": 29640.0,
+        "custos_servicos": 12480.0,
+        "lucro_bruto": 17160.0,
+        "despesas_administrativas": 4680.0,
+        "despesas_comerciais": 1560.0,
+        "despesas_tributarias": 1404.0,
+        "lucro_operacional": 9516.0,
+        "resultado_financeiro": 156.0,
+        "lucro_liquido": 9672.0
+      },
+      "5": {
+        "ano": 2026,
+        "receita_bruta": 28500.0,
+        "deducoes": 1425.0,
+        "receita_liquida": 27075.0,
+        "custos_servicos": 11400.0,
+        "lucro_bruto": 15675.0,
+        "despesas_administrativas": 4275.0,
+        "despesas_comerciais": 1425.0,
+        "despesas_tributarias": 1282.5,
+        "lucro_operacional": 8692.5,
+        "resultado_financeiro": 142.5,
+        "lucro_liquido": 8835.0
+      },
+      "6": {
+        "ano": 2026,
+        "receita_bruta": 35400.0,
+        "deducoes": 1770.0,
+        "receita_liquida": 33630.0,
+        "custos_servicos": 14160.0,
+        "lucro_bruto": 19470.0,
+        "despesas_administrativas": 5310.0,
+        "despesas_comerciais": 1770.0,
+        "despesas_tributarias": 1593.0,
+        "lucro_operacional": 10797.0,
+        "resultado_financeiro": 177.0,
+        "lucro_liquido": 10974.0
+      },
       "7": {
         "ano": 2026,
-        "receita_bruta": 8500.0,
-        "deducoes": 0,
-        "receita_liquida": 8500.0,
-        "custos_servicos": 3000.0,
-        "lucro_bruto": 5500.0,
-        "despesas_administrativas": 1500.0,
-        "despesas_comerciais": 500.0,
-        "despesas_tributarias": 382.5,
-        "lucro_operacional": 3117.5,
-        "resultado_financeiro": 0.0,
-        "lucro_liquido": 3117.5
+        "receita_bruta": 141680.0,
+        "deducoes": 7726.72,
+        "receita_liquida": 133953.28,
+        "custos_servicos": 49588.0,
+        "lucro_bruto": 84365.28,
+        "despesas_administrativas": 17001.6,
+        "despesas_comerciais": 7084.0,
+        "despesas_tributarias": 8430.12,
+        "lucro_operacional": 51849.55999999999,
+        "resultado_financeiro": 708.4,
+        "lucro_liquido": 52557.95999999999
       }
     },
     "acumulado": {
-      "receita_bruta": 0,
-      "deducoes": 0,
-      "receita_liquida": 0,
-      "custos_servicos": 0,
-      "lucro_bruto": 0,
-      "despesas_administrativas": 0,
-      "despesas_comerciais": 0,
-      "despesas_tributarias": 0,
-      "lucro_operacional": 0,
-      "resultado_financeiro": 0,
-      "lucro_liquido": 0
+      "receita_bruta": 198500.0,
+      "deducoes": 9925.0,
+      "receita_liquida": 188575.0,
+      "custos_servicos": 79400.0,
+      "lucro_bruto": 109175.0,
+      "despesas_administrativas": 29775.0,
+      "despesas_comerciais": 9925.0,
+      "despesas_tributarias": 10849.4,
+      "lucro_operacional": 58625.6,
+      "resultado_financeiro": 992.5,
+      "lucro_liquido": 60617.6
+    },
+    "projecao": {
+      "8": {
+        "receita_projetada": 46200.0,
+        "custo_estimado": 18480.0,
+        "lucro_estimado": 16170.0,
+        "margem_estimada": 35.0
+      },
+      "9": {
+        "receita_projetada": 49900.0,
+        "custo_estimado": 19960.0,
+        "lucro_estimado": 17465.0,
+        "margem_estimada": 35.0
+      },
+      "10": {
+        "receita_projetada": 53900.0,
+        "custo_estimado": 21560.0,
+        "lucro_estimado": 18865.0,
+        "margem_estimada": 35.0
+      },
+      "11": {
+        "receita_projetada": 58200.0,
+        "custo_estimado": 23280.0,
+        "lucro_estimado": 20370.0,
+        "margem_estimada": 35.0
+      },
+      "12": {
+        "receita_projetada": 62900.0,
+        "custo_estimado": 25160.0,
+        "lucro_estimado": 22015.0,
+        "margem_estimada": 35.0
+      }
     }
   },
   "evolucao_progresso": {
@@ -366,6 +482,7 @@
     "gen_calc_impostos.py",
     "gen_ci_pipeline.py",
     "gen_click_sign.py",
+    "gen_cobranca.py",
     "gen_conciliacao.py",
     "gen_contrato.py",
     "gen_crm.py",
@@ -373,6 +490,8 @@
     "gen_docx.py",
     "gen_dre.py",
     "gen_drip_campaign.py",
+    "gen_nfe_auto.py",
+    "gen_revenue_engine.py",
     "gen_dwg.py",
     "gen_eap.py",
     "gen_email_templates.py",
@@ -424,9 +543,57 @@
       {
         "timestamp": "2026-07-08T22:00:02.019797",
         "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T00:00:01.478786",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T02:00:01.832064",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T04:00:02.276019",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T06:00:01.938449",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T08:00:01.592450",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T10:00:02.524698",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T12:00:02.532419",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T14:00:02.574220",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T16:00:01.792058",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T18:00:01.303746",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T20:00:01.726810",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-09T22:00:02.331646",
+        "acoes": 0
       }
     ],
-    "ultima_execucao": "2026-07-08T22:00:02.019797"
+    "ultima_execucao": "2026-07-09T22:00:02.331646"
   },
   "system_log": [
     {
@@ -474,5 +641,104 @@
       "status": "ok"
     }
   ],
-  "ultimo_backup": "2026-07-08 23:07"
+  "pipeline": 28500.0,
+  "faturas": [
+    {
+      "id": "BSE-NF-0001",
+      "data": "2026-07-09",
+      "cliente": "E4 ENERGIA",
+      "servico": "Consultoria Telecom",
+      "valor": 98880.0,
+      "descricao": "Padronizacao SE 145kV - 12 meses",
+      "status": "emitida"
+    }
+  ],
+  "boletos": [
+    {
+      "id": "BSE-BOL-0001",
+      "cliente": "E4 ENERGIA",
+      "valor": 8240.0,
+      "descricao": "Consultoria Telecom - Jul/2026",
+      "emissao": "2026-07-01",
+      "vencimento": "2026-07-31",
+      "nosso_numero": "2026070100018765",
+      "status": "emitido",
+      "pago_em": null,
+      "valor_pago": 0
+    },
+    {
+      "id": "BSE-BOL-0002",
+      "cliente": "Concessionaria ABC",
+      "valor": 28500.0,
+      "descricao": "Projeto Fibra 45km - Faturamento",
+      "emissao": "2026-06-15",
+      "vencimento": "2026-07-15",
+      "nosso_numero": "2026061500021234",
+      "status": "pago",
+      "pago_em": "2026-07-10",
+      "valor_pago": 28500.0
+    },
+    {
+      "id": "BSE-BOL-0003",
+      "cliente": "Engie Brasil",
+      "valor": 32000.0,
+      "descricao": "Comissionamento SE 230kV",
+      "emissao": "2026-07-09",
+      "vencimento": "2026-08-08",
+      "nosso_numero": "2026070900035249",
+      "status": "emitido",
+      "pago_em": null,
+      "valor_pago": 0
+    }
+  ],
+  "ultimo_backup": "2026-07-08 23:08",
+  "nfes": [
+    {
+      "id": "BSE-NFE-0001",
+      "numero": 1,
+      "serie": "1",
+      "chave_acesso": "352607604901930001385500100000000114",
+      "data_emissao": "2026-07-09",
+      "data_saida": "2026-07-09",
+      "emitente": {
+        "razao_social": "BUENOSERV SERVIÇOS DE ENGENHARIA LTDA",
+        "cnpj": "60.490.193/0001-38",
+        "ie": "Isento (Simples Nacional)",
+        "regime": "Simples Nacional (LC 123/2006)",
+        "endereco": "Rua Giacomo Fior, 427, Leme - SP, 13610-000",
+        "telefone": "(11) 99999-8888",
+        "pix": "60.490.193/0001-38"
+      },
+      "destinatario": {
+        "nome": "E4 ENERGIA",
+        "cpf_cnpj": "12.345.678/0001-90",
+        "endereco": ""
+      },
+      "produtos": [
+        {
+          "codigo": "SRV-0001",
+          "descricao": "Consultoria Telecom - Padronizacao SE 145kV - 12 meses",
+          "ncm": "99999999",
+          "cfop": "5902",
+          "unidade": "UN",
+          "quantidade": 12,
+          "valor_unitario": 8240.0,
+          "valor_total": 98880.0
+        }
+      ],
+      "valor_total": 98880.0,
+      "impostos": {
+        "pis": 642.72,
+        "cofins": 2966.4,
+        "iss": 1977.6,
+        "simples_nacional": 0,
+        "total_impostos": 5586.72,
+        "aliquota_efetiva": 11.25,
+        "valor_liquido": 93293.28
+      },
+      "valor_liquido": 93293.28,
+      "status": "autorizada",
+      "protocolo": "SP0907202600000001"
+    }
+  ]
 }

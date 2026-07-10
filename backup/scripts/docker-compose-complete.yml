@@ -1,0 +1,283 @@
+services:
+  # === GATEWAY ===
+  nginx:
+    image: nginx:alpine
+    container_name: buenoserv-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /mnt/ssd/buenoserv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /mnt/ssd/buenoserv/nginx/certs:/etc/nginx/certs
+      - /tmp/opencode/site:/usr/share/nginx/html:ro
+    depends_on:
+      - dashboard
+      - api
+      - comercial
+      - financeiro
+      - engenharia
+      - tecnico
+      - projetos
+      - cad
+      - mcp
+    networks:
+      - buenoserv
+
+  # === DASHBOARD ===
+  dashboard:
+    image: python:3.12-slim
+    container_name: buenoserv-dashboard
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: python3 serve_dashboard.py
+    networks:
+      - buenoserv
+
+  # === API CENTRAL ===
+  api:
+    image: python:3.12-slim
+    container_name: buenoserv-api
+    restart: always
+    ports:
+      - "8090:8090"
+    environment:
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: python3 gen_api.py 8090
+    networks:
+      - buenoserv
+
+  # === DEPARTAMENTOS ===
+  comercial:
+    image: python:3.12-slim
+    container_name: buenoserv-comercial
+    restart: always
+    ports:
+      - "8501:8500"
+    environment:
+      - DEPARTAMENTO=COMERCIAL
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    networks:
+      - buenoserv
+    depends_on:
+      - api
+
+  financeiro:
+    image: python:3.12-slim
+    container_name: buenoserv-financeiro
+    restart: always
+    ports:
+      - "8502:8500"
+    environment:
+      - DEPARTAMENTO=FINANCEIRO
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    networks:
+      - buenoserv
+
+  engenharia:
+    image: python:3.12-slim
+    container_name: buenoserv-engenharia
+    restart: always
+    ports:
+      - "8503:8500"
+    environment:
+      - DEPARTAMENTO=ENGENHARIA
+      - HOME=/home/ricardobueno
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    networks:
+      - buenoserv
+
+  tecnico:
+    image: python:3.12-slim
+    container_name: buenoserv-tecnico
+    restart: always
+    ports:
+      - "8513:8500"
+    environment:
+      - DEPARTAMENTO=TECNICO
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    networks:
+      - buenoserv
+
+  projetos:
+    image: python:3.12-slim
+    container_name: buenoserv-projetos
+    restart: always
+    ports:
+      - "8504:8500"
+    environment:
+      - DEPARTAMENTO=PROJETOS
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    networks:
+      - buenoserv
+
+  suprimentos:
+    image: python:3.12-slim
+    container_name: buenoserv-suprimentos
+    restart: always
+    ports:
+      - "8505:8500"
+    environment:
+      - DEPARTAMENTO=SUPRIMENTOS
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 departamento_service.py"
+    networks:
+      - buenoserv
+
+  # === CAD/DWG SERVICE ===
+  cad:
+    image: python:3.12-slim
+    container_name: buenoserv-cad
+    restart: always
+    ports:
+      - "8510:8510"
+    environment:
+      - HOME=/home/ricardobueno
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 gen_cad_service.py"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    networks:
+      - buenoserv
+
+  # === MCP SERVER ===
+  mcp:
+    image: python:3.12-slim
+    container_name: buenoserv-mcp
+    restart: always
+    ports:
+      - "8520:8520"
+    environment:
+      - HOME=/home/ricardobueno
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 gen_mcp_server.py"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    networks:
+      - buenoserv
+
+  # === WHATSAPP BOT ===
+  whatsapp:
+    image: python:3.12-slim
+    container_name: buenoserv-whatsapp
+    restart: always
+    ports:
+      - "8095:8095"
+    environment:
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 gen_bot_whatsapp.py"
+    networks:
+      - buenoserv
+
+  # === AI ENGINE ===
+  ai:
+    image: python:3.12-slim
+    container_name: buenoserv-ai
+    restart: always
+    ports:
+      - "8550:8550"
+    environment:
+      - DEPARTAMENTO=IA
+      - HOME=/home/ricardobueno
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+      - /mnt/ssd/buenoserv/models:/mnt/ssd/buenoserv/models
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 gen_ai_engine.py"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    networks:
+      - buenoserv
+
+  # === TELEGRAM BOT ===
+  telegram:
+    image: python:3.12-slim
+    container_name: buenoserv-telegram
+    restart: always
+    ports:
+      - "8096:8096"
+    environment:
+      - HOME=/home/ricardobueno
+    volumes:
+      - /home/ricardobueno/.config/opencode:/home/ricardobueno/.config/opencode
+      - /tmp/opencode:/tmp/opencode
+    working_dir: /tmp/opencode/templates
+    command: bash -c "pip install flask -q && python3 gen_bot_telegram.py" 2>/dev/null || true
+    networks:
+      - buenoserv
+
+networks:
+  buenoserv:
+    external: true

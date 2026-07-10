@@ -1,0 +1,60 @@
+{
+  "title": "BUENOSERV Monitoring",
+  "uid": "buenoserv",
+  "version": 1,
+  "tags": ["buenoserv"],
+  "timezone": "browser",
+  "panels": [
+    {
+      "title": "CPU Usage",
+      "type": "graph",
+      "gridPos": {"x": 0, "y": 0, "w": 8, "h": 6},
+      "targets": [{"expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}"}]
+    },
+    {
+      "title": "Memory Usage",
+      "type": "graph",
+      "gridPos": {"x": 8, "y": 0, "w": 8, "h": 6},
+      "targets": [{"expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100", "legendFormat": "{{instance}}"}]
+    },
+    {
+      "title": "Disk Usage",
+      "type": "graph",
+      "gridPos": {"x": 16, "y": 0, "w": 8, "h": 6},
+      "targets": [{"expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}) * 100)", "legendFormat": "{{mountpoint}}"}]
+    },
+    {
+      "title": "Container CPU (cAdvisor)",
+      "type": "graph",
+      "gridPos": {"x": 0, "y": 7, "w": 12, "h": 6},
+      "targets": [{"expr": "rate(container_cpu_usage_seconds_total[5m])", "legendFormat": "{{name}}"}]
+    },
+    {
+      "title": "Container Memory (cAdvisor)",
+      "type": "graph",
+      "gridPos": {"x": 12, "y": 7, "w": 12, "h": 6},
+      "targets": [{"expr": "container_memory_usage_bytes", "legendFormat": "{{name}}"}]
+    },
+    {
+      "title": "GPU Temperature",
+      "type": "graph",
+      "gridPos": {"x": 0, "y": 14, "w": 8, "h": 6},
+      "targets": [{"expr": "nvidia_gpu_temperature_celsius", "legendFormat": "{{name}}"}]
+    },
+    {
+      "title": "GPU Memory",
+      "type": "graph",
+      "gridPos": {"x": 8, "y": 14, "w": 8, "h": 6},
+      "targets": [{"expr": "nvidia_gpu_memory_used_bytes", "legendFormat": "{{name}}"}]
+    },
+    {
+      "title": "Uptime",
+      "type": "stat",
+      "gridPos": {"x": 16, "y": 14, "w": 8, "h": 6},
+      "targets": [{"expr": "time() - node_boot_time_seconds", "legendFormat": "{{instance}}"}],
+      "fieldConfig": {"defaults": {"unit": "s"}}
+    }
+  ],
+  "schemaVersion": 36,
+  "refresh": "30s"
+}

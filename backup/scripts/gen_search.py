@@ -328,6 +328,31 @@ if __name__ == "__main__":
             elif arg == "--state":
                 filter_tipo = "STATE"
         as_json = "--json" in sys.argv
+        usar_ia = "--ia" in sys.argv
+
+        if usar_ia:
+            import requests
+            try:
+                resp = requests.post(
+                    "http://localhost:8560/search",
+                    json={"texto": term, "top_k": 10},
+                    timeout=30,
+                )
+                if resp.status_code == 200:
+                    dados_ia = resp.json()
+                    print(f'\n\033[1m\033[96mBusca semântica IA para "{term}":\033[0m\n')
+                    for r in dados_ia.get("resultados", []):
+                        score_bar = "█" * int(r["score"] * 30)
+                        print(f'  \033[1m{r["agente"]}\033[0m')
+                        print(f'    {r["descricao"]}')
+                        print(f'    \033[93mScore: {r["score"]:.4f} {score_bar}\033[0m\n')
+                    return
+                else:
+                    print(f'\033[91mErro IA: {resp.status_code} - {resp.text}\033[0m')
+            except Exception as e:
+                print(f'\033[91mErro ao conectar no serviço IA: {e}\033[0m')
+                print("  Verifique se o container buenoserv-ai-model está rodando.\n")
+            return
 
         data = load_index()
         if not data:

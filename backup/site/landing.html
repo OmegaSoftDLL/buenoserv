@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Sua Subestação Precisa de Expertise?</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a1628;color:#e0e0e0;min-height:100vh}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#162240 40%,#0a1628 100%);min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(212,168,67,.04) 0%,transparent 60%);pointer-events:none}
+.hero-content{max-width:600px;width:100%;text-align:center;position:relative;z-index:1}
+.hero h1{font-size:2.8em;color:#d4a843;line-height:1.15;margin-bottom:16px;letter-spacing:-.5px}
+.hero p{font-size:1.15em;color:#8899bb;margin-bottom:30px;line-height:1.5}
+.social-proof{background:rgba(212,168,67,.06);border:1px solid rgba(212,168,67,.12);border-radius:12px;padding:16px 20px;margin-bottom:30px;display:inline-block}
+.social-proof p{color:#d4a843;font-size:.9em;margin:0}
+.social-proof p span{font-size:1.2em}
+.form-box{background:rgba(18,30,55,.9);border:1px solid #1e3050;border-radius:16px;padding:36px;text-align:left;backdrop-filter:blur(10px)}
+.form-box h3{color:#d4a843;font-size:1.2em;margin-bottom:20px;text-align:center}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;color:#8899bb;font-size:.82em;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select{width:100%;padding:12px 16px;background:rgba(10,22,40,.8);border:1px solid #1e3050;border-radius:8px;color:#e0e0e0;font-size:.95em;transition:border-color .3s}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#d4a843}
+.form-group select option{background:#0a1628;color:#e0e0e0}
+.btn-cta{width:100%;padding:14px;background:linear-gradient(135deg,#d4a843,#b8912e);border:none;border-radius:8px;color:#0a1628;font-size:1.1em;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:8px}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,67,.3)}
+.btn-cta:active{transform:translateY(0)}
+.benefits-bar{display:flex;justify-content:center;gap:30px;margin-top:40px;flex-wrap:wrap}
+.benefit-item{display:flex;align-items:center;gap:8px;color:#7a8baa;font-size:.85em}
+.benefit-item .icon{color:#d4a843;font-size:1.2em}
+@media(max-width:600px){.hero h1{font-size:2em}.form-box{padding:24px 18px}.benefits-bar{gap:14px}}
+</style>
+</head>
+<body>
+<section class="hero">
+<div class="hero-content">
+<h1>Sua Subestação Precisa de Expertise?</h1>
+<p>20+ anos em comissionamento elétrico, telecom e proteção. Soluções completas para concessionárias e indústrias.</p>
+
+<div class="social-proof">
+<p><span>🏢</span> Atendemos as maiores concessionárias do Brasil</p>
+</div>
+
+<form class="form-box" onsubmit="event.preventDefault();alert('Obrigado! Entraremos em contato em até 24h úteis.');this.reset()">
+<h3>Solicitar Proposta Grátis</h3>
+<div class="form-group">
+<label for="nome">Nome</label>
+<input type="text" id="nome" required placeholder="Seu nome completo">
+</div>
+<div class="form-group">
+<label for="empresa">Empresa</label>
+<input type="text" id="empresa" required placeholder="Nome da sua empresa">
+</div>
+<div class="form-group">
+<label for="email">E-mail</label>
+<input type="email" id="email" required placeholder="seu@email.com.br">
+</div>
+<div class="form-group">
+<label for="telefone">Telefone</label>
+<input type="tel" id="telefone" required placeholder="(11) 99999-0000">
+</div>
+<div class="form-group">
+<label for="servico">Serviço de Interesse</label>
+<select id="servico">
+<option>Comissionamento de SE</option>
+<option>Telecomunicações</option>
+<option>Proteção e Controle</option>
+<option>SCADA / EMS / RTU</option>
+<option>Data Centers</option>
+<option>Cybersecurity</option>
+<option>Fibra Óptica</option>
+<option>Outro</option>
+</select>
+</div>
+<button type="submit" class="btn-cta">Solicitar Proposta Grátis</button>
+</form>
+
+<div class="benefits-bar">
+<div class="benefit-item"><span class="icon">✓</span> Resposta em até 24h</div>
+<div class="benefit-item"><span class="icon">✓</span> Orçamento sem compromisso</div>
+<div class="benefit-item"><span class="icon">✓</span> Profissionais certificados</div>
+</div>
+</div>
+</section>
+</body>
+</html>

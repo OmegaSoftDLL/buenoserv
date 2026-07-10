@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Status Comercial — BUENOSERV</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a1628;--card:#111d35;--card-hover:#162240;--text:#e0e6f0;--text-muted:#6e7f96;--border:#1e3250;--gold:#C9A84C;--gold-dim:#8a7a3a;--green:#4CAF50;--blue:#42A5F5;--orange:#FF9800;--red:#e53935;--radius:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.header h1{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.header h1 span{color:var(--gold)}
+.header h1 small{color:var(--text-muted);font-weight:400;font-size:0.8rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden}
+.stat-card .label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.stat-card .value{font-size:1.8rem;font-weight:700}
+.stat-card .sub{font-size:0.8rem;color:var(--text-muted);margin-top:4px}
+.stat-card .bar{position:absolute;bottom:0;left:0;right:0;height:3px}
+.stat-card .bar.gold{background:var(--gold)}
+.stat-card .bar.green{background:var(--green)}
+.stat-card .bar.blue{background:var(--blue)}
+.stat-card .bar.orange{background:var(--orange)}
+.pipeline-table{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.pipeline-table table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.pipeline-table th{background:rgba(201,168,76,.08);color:var(--gold);padding:12px 14px;text-align:left;font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.pipeline-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text)}
+.pipeline-table tr:hover{background:var(--card-hover)}
+.pipeline-table tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.7rem;font-weight:600}
+.badge.prospeccao{background:rgba(66,165,245,.15);color:var(--blue)}
+.badge.proposta{background:rgba(201,168,76,.15);color:var(--gold)}
+.badge.fechado{background:rgba(76,175,80,.15);color:var(--green)}
+.timeline{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.timeline h3{color:var(--gold);font-size:0.9rem;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.tl-item{display:flex;gap:14px;margin-bottom:14px;position:relative;padding-left:20px}
+.tl-item::before{content:'';position:absolute;left:6px;top:0;bottom:-14px;width:1px;background:var(--border)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;position:relative;z-index:1;border:2px solid var(--gold);background:var(--card)}
+.tl-dot.ok{background:var(--green);border-color:var(--green)}
+.tl-dot.warn{background:var(--gold);border-color:var(--gold)}
+.tl-content{flex:1}
+.tl-content .tl-date{font-size:0.7rem;color:var(--text-muted)}
+.tl-content .tl-text{font-size:0.85rem;color:var(--text);line-height:1.4}
+.contact-log{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.contact-log h3{color:var(--gold);font-size:0.9rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.contact-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:0.82rem}
+.contact-item:last-child{border-bottom:none}
+.contact-item .ci-cliente{color:var(--text);font-weight:500}
+.contact-item .ci-data{color:var(--text-muted);font-size:0.75rem}
+.contact-item .ci-status{font-size:0.7rem}
+.contact-item .ci-status.ok{color:var(--green)}
+.contact-item .ci-status.pend{color:var(--gold)}
+.refresh-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;font-size:0.8rem;transition:.2s}
+.refresh-btn:hover{background:var(--card-hover);border-color:var(--gold)}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr}.pipeline-table table,.pipeline-table thead,.pipeline-table tbody,.pipeline-table th,.pipeline-table td,.pipeline-table tr{display:block}.pipeline-table thead{display:none}.pipeline-table td{padding:8px 12px;position:relative;padding-left:50%}.pipeline-table td::before{content:attr(data-label);position:absolute;left:12px;width:45%;font-weight:600;color:var(--text-muted);font-size:0.7rem}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1><span>⚡</span> Status Comercial <span>BUENOSERV</span> <small>Departamento Comercial</small></h1>
+  <div style="display:flex;gap:8px">
+    <span id="lastUpdate" style="font-size:0.75rem;color:var(--text-muted);align-self:center"></span>
+    <button class="refresh-btn" onclick="carregarDados()">🔄 Atualizar</button>
+  </div>
+</div>
+
+<div class="stats-grid" id="statsGrid"></div>
+<div class="pipeline-table" id="pipelineSection"></div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+  <div class="timeline" id="timelineSection">
+    <h3>📅 Timeline Comercial</h3>
+    <div id="timelineContent"></div>
+  </div>
+  <div class="contact-log" id="contactSection">
+    <h3>📋 Historico de Contatos</h3>
+    <div id="contactContent"></div>
+  </div>
+</div>
+
+<script>
+const API_URL = '/api/state';
+let DATA = null;
+
+const EMPRESA_EMAIL = {
+  "iosienergia":"comercial@iosienergia.com.br",
+  "sistem":"comercial@sistem.eng.br",
+  "omexom":"contato@omexom.com",
+  "cymi":"cymi@cymiconstrucoes.com.br",
+  "engie":"comercial@engie.com.br",
+  "construtorabrasilreal":"contato@construtorabrasilreal.com.br",
+  "mpeengenharia":"mpe@mpeengenharia.com.br",
+  "engesist":"engesist@engesist.com.br",
+  "montelbras":"comercial@montelbras.com.br",
+  "aplicaengenharia":"contato@aplicaengenharia.com.br",
+  "proteonengenharia":"contato@proteonengenharia.com.br"
+};
+
+function fmtMoeda(v){return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2})}
+function fmtData(d){if(!d)return'-';try{const dt=new Date(d);if(isNaN(dt))return d.slice(0,10);return dt.toLocaleDateString('pt-BR')}catch(e){return d.slice(0,10)}}
+
+function extrairOportunidades(state){
+  const ops=[];
+  const tasks=state.tasks||{};
+  const emails=state.emails_enviados||[];
+  const dre=state.dre||{};
+  const receita=dre.meses&&dre.meses['7']?dre.meses['7'].receita_bruta:0;
+
+  for(const [nome,historico] of Object.entries(tasks)){
+    const isCommercial=historico.some(t=>t.agente==='comercial');
+    if(!isCommercial)continue;
+    const ultimo=historico[historico.length-1]||{};
+    const status=ultimo.status==='concluido'?'prospeccao':'proposta';
+    const emailEncontrado=historico.reduce((acc,t)=>{
+      const obs=t.observacao||'';
+      const match=obs.match(/[\w.+-]+@[\w-]+\.[\w.+-]+/);
+      return match?match[0]:acc;
+    },null);
+    const dataEnv=historico.filter(t=>t.agente==='comercial'&&t.status==='concluido')
+      .sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+    const ultimoEnv=dataEnv[0];
+    ops.push({
+      nome:nome.replace('Prospeccao ',''),
+      raw:nome,
+      status,
+      email:emailEncontrado||EMPRESA_EMAIL[Object.keys(EMPRESA_EMAIL).find(k=>nome.toLowerCase().includes(k))]||'-',
+      data:ultimoEnv?fmtData(ultimoEnv.timestamp):'-',
+      contatos:historico.filter(t=>t.agente==='comercial'),
+      prob:status==='prospeccao'?30:60
+    });
+  }
+
+  return {oportunidades:ops,receita,emails};
+}
+
+function renderStats(ops,receita){
+  const total=ops.length;
+  const prospeccao=ops.filter(o=>o.status==='prospeccao').length;
+  const proposta=ops.filter(o=>o.status==='proposta').length;
+  const grid=document.getElementById('statsGrid');
+  grid.innerHTML=`
+    <div class="stat-card">
+      <div class="label">Total Pipeline</div>
+      <div class="value">${total}</div>
+      <div class="sub">oportunidades</div>
+      <div class="bar gold"></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Prospeccao</div>
+      <div class="value" style="color:var(--blue)">${prospeccao}</div>
+      <div class="sub">em prospeccao ativa</div>
+      <div class="bar blue"></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Proposta</div>
+      <div class="value" style="color:var(--gold)">${proposta}</div>
+      <div class="sub">com proposta enviada</div>
+      <div class="bar orange"></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Receita Julho</div>
+      <div class="value" style="color:var(--green)">${fmtMoeda(receita)}</div>
+      <div class="sub">faturado no mes</div>
+      <div class="bar green"></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Disparos</div>
+      <div class="value" style="color:var(--gold)">${total}</div>
+      <div class="sub">propostas enviadas</div>
+      <div class="bar gold"></div>
+    </div>
+  `;
+}
+
+function renderPipeline(ops){
+  const sec=document.getElementById('pipelineSection');
+  if(!ops.length){
+    sec.innerHTML='<div style="padding:30px;text-align:center;color:var(--text-muted)">Nenhuma oportunidade comercial encontrada</div>';
+    return;
+  }
+  const sorted=[...ops].sort((a,b)=>new Date(b.data||0)-new Date(a.data||0));
+  sec.innerHTML=`
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Estagio</th>
+          <th>Email</th>
+          <th>Ultimo Contato</th>
+          <th>Prob.</th>
+          <th>Contatos</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sorted.map(o=>`
+          <tr>
+            <td data-label="Cliente"><strong>${o.nome}</strong></td>
+            <td data-label="Estagio"><span class="badge ${o.status}">${o.status==='prospeccao'?'🟡 Prospeccao':'🟠 Proposta'}</span></td>
+            <td data-label="Email" style="color:var(--text-muted);font-size:0.8rem">${o.email}</td>
+            <td data-label="Ultimo Contato">${o.data}</td>
+            <td data-label="Prob.">${o.prob}%</td>
+            <td data-label="Contatos">${o.contatos.length}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderTimeline(ops){
+  const el=document.getElementById('timelineContent');
+  const eventos=[];
+  ops.forEach(o=>{
+    o.contatos.forEach(t=>{
+      eventos.push({data:t.timestamp,texto:`${o.nome}: ${t.status==='concluido'?'📧 Contato realizado':'🔄 Em andamento'}`,status:t.status||'em_andamento'});
+    });
+  });
+  eventos.sort((a,b)=>new Date(b.data)-new Date(a.data));
+  if(!eventos.length){
+    el.innerHTML='<div style="color:var(--text-muted);font-size:0.85rem">Nenhum evento registrado</div>';
+    return;
+  }
+  el.innerHTML=eventos.slice(0,20).map(e=>`
+    <div class="tl-item">
+      <div class="tl-dot ${e.status==='concluido'?'ok':'warn'}"></div>
+      <div class="tl-content">
+        <div class="tl-date">${fmtData(e.data)}</div>
+        <div class="tl-text">${e.texto}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderContacts(ops){
+  const el=document.getElementById('contactContent');
+  const contatos=[];
+  ops.forEach(o=>{
+    o.contatos.forEach(t=>{
+      contatos.push({cliente:o.nome,data:t.timestamp,status:t.status,obs:t.observacao});
+    });
+  });
+  contatos.sort((a,b)=>new Date(b.data)-new Date(a.data));
+  if(!contatos.length){
+    el.innerHTML='<div style="color:var(--text-muted);font-size:0.85rem">Nenhum contato registrado</div>';
+    return;
+  }
+  el.innerHTML=contatos.slice(0,15).map(c=>`
+    <div class="contact-item">
+      <span class="ci-cliente">${c.cliente}</span>
+      <span class="ci-data">${fmtData(c.data)}</span>
+      <span class="ci-status ${c.status==='concluido'?'ok':'pend'}">${c.status==='concluido'?'✅':'⏳'}</span>
+    </div>
+  `).join('');
+}
+
+async function carregarDados(){
+  try{
+    const r=await fetch(API_URL,{signal:AbortSignal.timeout(5000)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    DATA=await r.json();
+    document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleTimeString('pt-BR');
+  }catch(e){
+    document.getElementById('lastUpdate').textContent='⚠️ Offline';
+    return;
+  }
+  const {oportunidades,receita,emails}=extrairOportunidades(DATA);
+  renderStats(oportunidades,receita);
+  renderPipeline(oportunidades);
+  renderTimeline(oportunidades);
+  renderContacts(oportunidades);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  carregarDados();
+  setInterval(carregarDados,30000);
+});
+</script>
+</body>
+</html>

@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://buenoserv.com/sitemap.xml
+# Sitemaps
+Sitemap: https://buenoservengenharia.com/sitemap.xml
+
+# Disallow admin/private areas
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /private/

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUENOSERV — Proposta Comercial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#222;background:#eee;padding:40px}
+.page{max-width:210mm;margin:0 auto;background:#fff;padding:30mm 20mm 20mm;min-height:297mm;box-shadow:0 4px 20px rgba(0,0,0,.12);position:relative}
+.page::before{content:'';position:absolute;top:0;left:0;right:0;height:6mm;background:linear-gradient(90deg,#0a1628 0%,#d4a843 100%)}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:30px;padding-bottom:20px;border-bottom:2px solid #d4a843}
+.header .logo h1{color:#0a1628;font-size:1.4em;letter-spacing:2px}
+.header .logo p{color:#666;font-size:.8em}
+.header .ref{text-align:right}
+.header .ref .num{color:#d4a843;font-size:1.3em;font-weight:700}
+.header .ref .label{color:#888;font-size:.75em;text-transform:uppercase}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:30px}
+.info-group h3{color:#d4a843;font-size:.8em;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.info-group p{color:#333;font-size:.92em}
+.section{margin-bottom:28px}
+.section h2{color:#0a1628;font-size:1.15em;border-bottom:2px solid #d4a843;padding-bottom:6px;margin-bottom:12px}
+.section p,.section li{color:#444;font-size:.9em;line-height:1.6}
+.section ul{padding-left:20px}
+.section ul li{margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th,td{border:1px solid #ddd;padding:10px 14px;text-align:left;font-size:.85em}
+th{background:#0a1628;color:#d4a843;font-weight:600}
+td{color:#444}
+tr:nth-child(even){background:#f9f9f9}
+.conditions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.conditions .item{padding:10px 14px;background:#f5f5f5;border-left:3px solid #d4a843}
+.conditions .item h4{color:#0a1628;font-size:.82em;margin-bottom:2px}
+.conditions .item p{color:#555;font-size:.82em}
+.signature{margin-top:40px;padding-top:20px;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.signature .sig-box{text-align:center}
+.signature .sig-box .line{width:200px;height:1px;background:#333;margin:10px auto 6px}
+.signature .sig-box p{color:#555;font-size:.8em}
+.footer{position:absolute;bottom:15mm;left:20mm;right:20mm;text-align:center;color:#999;font-size:.7em;border-top:1px solid #eee;padding-top:8px}
+@media print{body{background:#fff;padding:0}.page{box-shadow:none;padding:15mm 20mm 20mm}}
+@media(max-width:600px){.info-grid,.conditions,.signature{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+<div class="logo">
+<h1>BUENOSERV</h1>
+<p>Engenharia de Alta Tensão & Telecomunicações</p>
+</div>
+<div class="ref">
+<div class="num">PROP-2025-####</div>
+<div class="label">Proposta Comercial</div>
+<div style="color:#888;font-size:.75em;margin-top:4px">Data: __/__/____<br>Validade: 30 dias</div>
+</div>
+</div>
+
+<div class="info-grid">
+<div class="info-group">
+<h3>Cliente</h3>
+<p><strong>Empresa:</strong> [Nome da Empresa]<br>
+<strong>CNPJ:</strong> 00.000.000/0001-00<br>
+<strong>Contato:</strong> [Nome do Contato]<br>
+<strong>E-mail:</strong> [email@empresa.com.br]</p>
+</div>
+<div class="info-group">
+<h3>BUENOSERV</h3>
+<p><strong>Responsável:</strong> Ricardo Bueno<br>
+<strong>CNPJ:</strong> 00.000.000/0001-00<br>
+<strong>E-mail:</strong> ricardo@buenoserv.com.br<br>
+<strong>Tel:</strong> (11) 9XXXX-XXXX</p>
+</div>
+</div>
+
+<div class="section">
+<h2>Escopo do Serviço</h2>
+<p>Descrever detalhadamente o escopo técnico do serviço a ser executado, incluindo:</p>
+<ul>
+<li>Atividades a serem realizadas</li>
+<li>Equipamentos e sistemas envolvidos</li>
+<li>Normas aplicáveis</li>
+<li>Premissas e exclusões</li>
+<li>Documentação a ser entregue</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Cronograma</h2>
+<table>
+<tr><th>Etapa</th><th>Descrição</th><th>Prazo</th></tr>
+<tr><td>1</td><td>Reunião de kickoff e levantamento</td><td>Semana 1</td></tr>
+<tr><td>2</td><td>Execução dos serviços</td><td>Semanas 2-6</td></tr>
+<tr><td>3</td><td>Testes e validação</td><td>Semanas 7-8</td></tr>
+<tr><td>4</td><td>Entrega de documentação</td><td>Semana 9</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>Investimento</h2>
+<table>
+<tr><th>Item</th><th>Descrição</th><th>Valor (R$)</th></tr>
+<tr><td>1</td><td>Mobilização e planejamento</td><td>R$ 0,00</td></tr>
+<tr><td>2</td><td>Execução dos serviços</td><td>R$ 0,00</td></tr>
+<tr><td>3</td><td>Testes e comissionamento</td><td>R$ 0,00</td></tr>
+<tr><td>4</td><td>Documentação e as-built</td><td>R$ 0,00</td></tr>
+<tr style="background:#f0ead6"><td colspan="2"><strong>Valor Total</strong></td><td><strong>R$ 0,00</strong></td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>Condições Comerciais</h2>
+<div class="conditions">
+<div class="item"><h4>Forma de Pagamento</h4><p>50% na assinatura, 50% na aceitação dos serviços. Parcelamento sob consulta.</p></div>
+<div class="item"><h4>Garantia</h4><p>12 meses contra defeitos de execução, a partir da data de aceitação final.</p></div>
+<div class="item"><h4>Reajuste</h4><p>Valores válidos por 30 dias. Após este prazo, sujeito a reajuste conforme variação de custos.</p></div>
+<div class="item"><h4>Faturamento</h4><p>Nota fiscal emitida após cada etapa concluída e aceita pelo cliente.</p></div>
+</div>
+</div>
+
+<div class="signature">
+<div class="sig-box">
+<div class="line"></div>
+<p><strong>BUENOSERV</strong><br>Ricardo Bueno<br>Data: __/__/____</p>
+</div>
+<div class="sig-box">
+<div class="line"></div>
+<p><strong>Cliente</strong><br>Nome: ________________<br>Data: __/__/____</p>
+</div>
+</div>
+
+<div class="footer">
+BUENOSERV Engenharia • www.buenoserv.com.br • ricardo@buenoserv.com.br
+</div>
+</div>
+</body>
+</html>
