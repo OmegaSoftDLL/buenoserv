@@ -591,9 +591,57 @@
       {
         "timestamp": "2026-07-09T22:00:02.331646",
         "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T00:00:02.769760",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T02:00:02.247475",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T04:00:02.010828",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T06:00:02.781177",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T08:00:01.944959",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T10:00:02.745434",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T12:00:03.464477",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T14:00:02.302438",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T16:00:02.140733",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T18:00:02.010852",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T20:00:02.753617",
+        "acoes": 0
+      },
+      {
+        "timestamp": "2026-07-10T22:00:02.010632",
+        "acoes": 0
       }
     ],
-    "ultima_execucao": "2026-07-09T22:00:02.331646"
+    "ultima_execucao": "2026-07-10T22:00:02.010632"
   },
   "system_log": [
     {
@@ -638,6 +686,12 @@
       "para": "ricardo.bueno@buenoservengenharia.com",
       "assunto": "teste:1783556835",
       "data": "2026-07-08T21:27:15.921481",
+      "status": "ok"
+    },
+    {
+      "para": "ricardo.bueno@buenoservengenharia.com",
+      "assunto": "Relatório Financeiro — DRE da Semana",
+      "data": "2026-07-10T17:00:02.481026",
       "status": "ok"
     }
   ],
@@ -691,7 +745,7 @@
       "valor_pago": 0
     }
   ],
-  "ultimo_backup": "2026-07-08 23:08",
+  "ultimo_backup": "2026-07-09 23:00",
   "nfes": [
     {
       "id": "BSE-NFE-0001",
@@ -739,6 +793,15 @@
       "valor_liquido": 93293.28,
       "status": "autorizada",
       "protocolo": "SP0907202600000001"
+    }
+  ],
+  "relatorios_enviados": [
+    {
+      "tipo": "financeiro",
+      "data": "2026-07-10T17:00:01.981582",
+      "destinatario": "ricardo.bueno@buenoservengenharia.com",
+      "arquivo": "/tmp/opencode/relatorios/2026-07-10_financeiro_buenoserv.html",
+      "status": "ok"
     }
   ]
 }
